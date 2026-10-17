@@ -42,3 +42,9 @@ const loadMore = async () => {
 ```
 
 여기의 `/items`는 사용 예시입니다. 실제 서버 주소, 엔드포인트와 응답 형식에 맞춰 변경합니다. 인증 헤더는 `headers`로 전달하며, 파일 업로드나 Axios 인터셉터가 필요하면 `axiosInstance`를 직접 사용합니다.
+
+## 동일 주소 배포
+
+프론트와 API를 http://34.64.146.19 에서 함께 제공하면 VITE_API_BASE_URL을 비워두고 배포 서버에서 /api를 백엔드로 전달합니다. 서비스 클라이언트가 /api/v1을 자동으로 붙이므로 환경변수에 /api/v1을 넣으면 경로가 중복됩니다. 환경변수를 변경하면 pnpm build 후 새 빌드를 배포해야 합니다. Vite의 로컬 8080 프록시는 개발 서버에서만 동작합니다.
+
+Fetch와 Axios 유틸리티는 쿠키 전달을 사용합니다. 실제 서비스 인증·Bearer 토큰·갱신 처리는 client.ts의 request를 통해 사용하세요. Origin 헤더는 브라우저가 설정하며 프론트에서 지정하지 않습니다. 다른 origin의 API에 연결할 때는 백엔드에서 실제 프론트 origin과 credentials를 허용해야 합니다.
