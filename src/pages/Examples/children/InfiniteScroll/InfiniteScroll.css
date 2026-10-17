@@ -1,0 +1,7 @@
+.infinite-scroll-demo { width: min(800px, calc(100vw - 48px)); padding: 32px 0; margin: auto; }
+.infinite-scroll-demo h1 { font-size: 26px; font-weight: 700; }
+.infinite-scroll-demo > p { margin: 12px 0 24px; color: var(--text-secondary); }
+.infinite-scroll-demo__list { list-style: none; padding: 0; margin: 0; }
+.infinite-scroll-demo__list li { padding: 20px 24px; border-bottom: 1px solid var(--border-color); }
+.infinite-scroll-demo__list strong { font-size: 14px; }
+.infinite-scroll-demo__list p { margin: 6px 0 0; color: var(--text-secondary); font-size: 13px; }

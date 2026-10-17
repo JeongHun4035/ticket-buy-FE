@@ -1,0 +1,25 @@
+.footer-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 56px;
+  padding: 0 24px;
+
+  box-sizing: border-box;
+
+  color: var(--text-secondary);
+  background-color: var(--footer-background);
+
+  border-top: 1px solid var(--border-color);
+
+  box-shadow: var(--footer-shadow);
+
+  font-size: 14px;
+
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}

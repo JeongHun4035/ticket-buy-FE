@@ -1,0 +1,28 @@
+.examples-container {
+  display: flex;
+}
+
+.example-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-item {
+  cursor: pointer;
+}
+
+.example-item h2 {
+  transform-origin: left center;
+  transition: transform 180ms ease;
+}
+
+.example-item:hover h2,
+.example-item:focus-visible h2 {
+  transform: scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .example-item h2 {
+    transition: none;
+  }
+}

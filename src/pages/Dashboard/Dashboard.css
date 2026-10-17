@@ -1,0 +1,11 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.dashboard h1 {
+    font-size: 2rem;
+    margin-top: 2rem;
+}

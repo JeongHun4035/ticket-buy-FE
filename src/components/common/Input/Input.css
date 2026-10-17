@@ -1,0 +1,50 @@
+.common-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.common-input__label {
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.common-input__field {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+
+  box-sizing: border-box;
+
+  color: #111827;
+  background-color: #ffffff;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  outline: none;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.common-input__field::placeholder {
+  color: #9ca3af;
+}
+
+.common-input__field:focus {
+  border-color: #61dafb;
+
+  box-shadow: 0 0 0 3px rgba(97, 218, 251, 0.18);
+}
+
+.common-input__field:disabled {
+  color: #9ca3af;
+  background-color: #f3f4f6;
+
+  cursor: not-allowed;
+}

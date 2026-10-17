@@ -1,0 +1,22 @@
+.common-select { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.common-select label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+.common-select__control { position: relative; }
+.common-select select {
+  appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 36px 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.common-select select:hover:not(:disabled) { border-color: var(--text-muted); }
+.common-select select:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.common-select select:disabled { opacity: 0.5; cursor: not-allowed; }
+.common-select__arrow { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }

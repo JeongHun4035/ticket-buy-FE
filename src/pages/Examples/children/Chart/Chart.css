@@ -1,0 +1,67 @@
+.chart-demo {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.chart-demo p {
+  color: var(--text-secondary);
+}
+
+.chart-demo__card {
+  min-width: 0;
+  margin-top: 24px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.chart-demo__controls,
+.chart-demo__types {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.chart-demo__controls {
+  margin-bottom: 24px;
+}
+
+.chart-demo__controls label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.chart-demo__types button {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.chart-demo__types button[aria-pressed='true'] {
+  background: var(--button-primary-background);
+  color: var(--button-primary-text);
+}
+
+.chart-demo__code {
+  overflow-x: auto;
+  padding: 16px;
+  background: var(--background);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .chart-demo,
+  .chart-demo__card {
+    padding: 12px;
+  }
+}

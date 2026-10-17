@@ -1,0 +1,159 @@
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background-color: rgb(0 0 0 / 60%);
+
+  box-sizing: border-box;
+  z-index: 9999;
+}
+
+.popup-container {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  max-height: calc(100vh - 48px);
+  padding: 24px;
+
+  background-color: var(--surface);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.popup-sm {
+  width: 300px;
+  height: 300px;
+  max-width: 420px;
+}
+
+.popup-md {
+  width: 500px;
+  height: 500px;
+  max-width: 800px;
+}
+
+.popup-lg {
+  width: 700px;
+  height: 500px;
+  max-width: 1000px;
+}
+
+.custom-popup {
+  width: 900px;
+  height: 500px;
+  max-width: 90vw;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  flex-shrink: 0;
+
+  gap: 16px;
+
+  padding-bottom: 16px;
+
+  border-bottom: 1px solid var(--border-color);
+}
+
+.popup-title {
+  min-width: 0;
+
+  color: var(--text-primary);
+
+  font-size: 20px;
+  font-weight: 600;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.popup-content {
+  flex: 1;
+
+  padding: 20px;
+
+  color: var(--text-secondary);
+
+  overflow-y: auto;
+}
+
+.popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-shrink: 0;
+
+  padding-top: 16px;
+
+  border-top: 1px solid var(--border-color);
+}
+
+.popup-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 32px;
+  height: 32px;
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.popup-close svg {
+  width: 24px;
+  height: 24px;
+
+  color: inherit;
+}
+
+.popup-close:hover {
+  opacity: 0.6;
+
+  transform: scale(1.05);
+}
+
+.popup-close:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+
+  border-radius: 50%;
+}
+
+.popup-footer-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}

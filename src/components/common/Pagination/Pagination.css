@@ -1,0 +1,35 @@
+.common-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; color: var(--text-secondary); font-size: 13px; }
+.common-pagination__summary { margin: 0; font-variant-numeric: tabular-nums; }
+.common-pagination__summary strong { color: var(--text-primary); font-weight: 600; }
+.common-pagination__summary span { padding: 0 6px; color: var(--text-muted); }
+.common-pagination__controls { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.common-pagination__limit { flex-direction: row; align-items: center; gap: 10px; }
+.common-pagination__limit label { white-space: nowrap; font-weight: 400; }
+.common-pagination__pages { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.common-pagination__pages button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  background: transparent;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+.common-pagination__pages button:hover:not(:disabled) { background: var(--button-secondary-hover); color: var(--text-primary); }
+.common-pagination__pages button[aria-current='page'],
+.common-pagination__pages button[aria-current='page']:hover { background: var(--button-primary-background); color: var(--button-primary-text); font-weight: 600; }
+.common-pagination__pages button:disabled { opacity: 0.35; cursor: not-allowed; }
+.common-pagination__pages button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.common-pagination__ellipsis { padding: 0 4px; color: var(--text-muted); }
+@media (max-width: 640px) {
+  .common-pagination__controls { width: 100%; gap: 12px; }
+  .common-pagination__pages { gap: 2px; }
+  .common-pagination__pages button { min-width: 30px; padding: 0 6px; }
+}
