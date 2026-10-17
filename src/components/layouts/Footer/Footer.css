@@ -1,25 +1,40 @@
-.footer-area {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 100%;
-  min-height: 56px;
-  padding: 0 24px;
-
-  box-sizing: border-box;
-
-  color: var(--text-secondary);
-  background-color: var(--footer-background);
-
-  border-top: 1px solid var(--border-color);
-
-  box-shadow: var(--footer-shadow);
-
-  font-size: 14px;
-
-  transition:
-    color 0.25s ease,
-    background-color 0.25s ease,
-    border-color 0.25s ease;
-}
+﻿.footer-area { width: 100%; background: var(--surface); color: var(--text-secondary); border-top: 1px solid var(--border-color); font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+.ticket-footer-inner { max-width: 1220px; margin: 0 auto; padding: 0 40px 23px; }
+.ticket-footer-partners { display: flex; justify-content: space-between; align-items: center; gap: 35px; padding: 32px 0; border-bottom: 1px solid var(--border-color); }
+.ticket-footer-eyebrow { color: #658b7f; font-size: 9px; font-weight: 700; letter-spacing: 2px; }
+.ticket-footer-partners h2 { margin: 9px 0 0; font-size: 14px; font-weight: 600; letter-spacing: -.3px; color: var(--text-primary); }
+.ticket-footer-partners ul { display: flex; align-items: center; justify-content: space-between; gap: 45px; list-style: none; margin: 0; padding: 0; }
+.ticket-footer-sponsor { color: var(--text-secondary); opacity: .8; white-space: nowrap; user-select: none; }
+.ticket-footer-sponsor--nova { display: flex; align-items: center; gap: 8px; font-size: 24px; font-weight: 800; letter-spacing: 2px; line-height: 1; }
+.ticket-footer-sponsor--nova > span { font-size: 35px; color: #6b9587; }
+.ticket-footer-sponsor--nova small { display: block; font-size: 6px; letter-spacing: 2px; margin-top: 6px; font-weight: 500; }
+.ticket-footer-sponsor--scene { font-size: 22px; font-weight: 800; letter-spacing: -1px; }
+.ticket-footer-sponsor--scene > span { font-weight: 300; margin-left: 3px; }
+.ticket-footer-sponsor--aurora { position: relative; font-size: 18px; letter-spacing: 2px; font-family: Georgia, serif; }
+.ticket-footer-sponsor--aurora > span { font-size: 22px; margin-right: 6px; color: #6b9587; }
+.ticket-footer-sponsor--aurora small { display: block; text-align: center; margin-top: 4px; font-family: sans-serif; font-size: 6px; letter-spacing: 2px; }
+.ticket-footer-company { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 40px; padding: 37px 0 32px; }
+.ticket-footer-about .brand-logo { font-size: 20px; }
+.ticket-footer-about .brand-logo__icon { width: 28px; height: 28px; font-size: 18px; }
+.ticket-footer-about > p { font-size: 11px; line-height: 1.9; margin: 17px 0 12px; }
+.ticket-footer-company-name { font-size: 10px; color: var(--text-muted); }
+.ticket-footer-company section > h2 { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--text-primary); margin: 3px 0 17px; }
+.ticket-footer-company section > h2 svg { color: #658b7f; font-size: 15px; }
+.ticket-footer-office address { font-style: normal; font-size: 11px; line-height: 1.9; }
+.ticket-footer-office address > span { display: block; margin-top: 7px; font-size: 8px; letter-spacing: 1px; color: var(--text-muted); }
+.ticket-footer-office > p { font-size: 9px; line-height: 1.8; margin: 12px 0 0; }
+.ticket-footer-office > p strong { font-weight: 500; }
+.ticket-footer-office > p > span { padding: 0 7px; color: var(--text-muted); }
+.ticket-footer-phone { display: block; font-size: 24px; font-weight: 650; letter-spacing: .5px; color: var(--text-primary); }
+.ticket-footer-support > p { font-size: 10px; line-height: 1.9; margin: 8px 0; }
+.ticket-footer-email { font-size: 10px; color: var(--text-muted); }
+.ticket-footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+.ticket-footer-bottom > p { margin: 0; font-size: 9px; color: var(--text-muted); }
+.ticket-footer-bottom nav { display: flex; align-items: center; gap: 22px; }
+.ticket-footer-bottom a { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text-secondary); text-decoration: none; }
+.ticket-footer-bottom a:hover { color: #658b7f; }
+.ticket-footer-demo { color: var(--text-muted); font-size: 9px; line-height: 1.8; margin: 14px 0 0; }
+.footer-area a:focus-visible { outline: 2px solid #648e85; outline-offset: 4px; }
+@media (max-width: 980px) { .ticket-footer-partners { align-items: flex-start; } .ticket-footer-partners ul { flex-wrap: wrap; justify-content: flex-end; gap: 24px; } .ticket-footer-company { gap: 25px; } }
+@media (max-width: 700px) { .ticket-footer-inner { padding: 0 24px 22px; } .ticket-footer-partners { flex-direction: column; gap: 24px; padding: 26px 0; } .ticket-footer-partners ul { width: 100%; justify-content: flex-start; gap: 25px; } .ticket-footer-company { grid-template-columns: 1fr 1fr; gap: 28px 24px; padding: 28px 0; } .ticket-footer-about { grid-column: 1 / -1; } .ticket-footer-about > p { margin-top: 12px; } .ticket-footer-sponsor--nova { font-size: 19px; } .ticket-footer-sponsor--nova > span { font-size: 28px; } .ticket-footer-sponsor--scene { font-size: 19px; } .ticket-footer-sponsor--aurora { font-size: 15px; } }
+@media (max-width: 440px) { .ticket-footer-inner { padding-left: 16px; padding-right: 16px; } .ticket-footer-company { grid-template-columns: 1fr; } .ticket-footer-partners ul { gap: 22px; } .ticket-footer-bottom { align-items: flex-start; flex-direction: column-reverse; } }

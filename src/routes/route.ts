@@ -1,6 +1,11 @@
 export const ROUTE_PATHS = {
   SIGN_IN: '/sign-in',
-  DASHBOARD: '/dash-board',
+  SIGN_UP: '/sign-up',
+  MAIN: '/',
+  RESERVATIONS: '/reservations',
+  ADMIN: '/admin',
+  SUPPORT: '/support',
+  BOARD: '/board',
   EXAMPLES: '/examples',
   CHART: '/examples/chart',
   GRID: '/examples/grid',
@@ -20,15 +25,27 @@ export interface AppRouteMeta {
 
 export const APP_ROUTES: AppRouteMeta[] = [
   {
+    key: 'SUPPORT',
+    path: ROUTE_PATHS.SUPPORT,
+    label: '고객센터',
+    showInNav: true,
+  },
+  {
+    key: 'BOARD',
+    path: ROUTE_PATHS.BOARD,
+    label: '게시판',
+    showInNav: true,
+  },
+  {
     key: 'SIGN_IN',
     path: ROUTE_PATHS.SIGN_IN,
     label: '로그인',
     showInNav: true,
   },
   {
-    key: 'DASHBOARD',
-    path: ROUTE_PATHS.DASHBOARD,
-    label: '대시보드',
+    key: 'MAIN',
+    path: ROUTE_PATHS.MAIN,
+    label: '메인',
     showInNav: true,
   },
   {
@@ -52,3 +69,4 @@ export const APP_ROUTES: AppRouteMeta[] = [
 //     showInNav: true,
 //   },
 ]
+

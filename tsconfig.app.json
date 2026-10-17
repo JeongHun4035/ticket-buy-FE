@@ -11,6 +11,7 @@
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
+    "resolveJsonModule": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",

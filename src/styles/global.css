@@ -19,3 +19,13 @@ body {
     color 0.2s ease,
     background-color 0.2s ease;
 }
+/* Native modals share viewport centering, independent of CSS resets. */
+dialog[open] {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi'
 
 import type { ToastVariant } from '@/contexts/toast/ToastContext'
 
@@ -15,6 +17,8 @@ interface ToastProps {
 }
 
 const Toast = ({ id, message, variant, duration, closing, onClose, onExited }: ToastProps) => {
+  const { t } = useTranslation()
+  const Icon = variant === 'success' ? FiCheckCircle : variant === 'error' ? FiAlertCircle : FiInfo
   useEffect(() => {
     if (duration <= 0 || closing) return
     const timer = setTimeout(() => onClose(id), duration)
@@ -44,8 +48,9 @@ const Toast = ({ id, message, variant, duration, closing, onClose, onExited }: T
         if (event.target === event.currentTarget && event.animationName === 'toast-exit' && closing) onExited(id)
       }}
     >
-      <span role={variant === 'error' ? 'alert' : 'status'}>{message}</span>
-      <button type="button" aria-label="알림 닫기" disabled={closing} onClick={() => onClose(id)}>×</button>
+      <Icon className="common-toast__icon" aria-hidden="true" />
+      <span className="common-toast__message" role={variant === 'error' ? 'alert' : 'status'}>{message}</span>
+      <button type="button" aria-label={t('닫기')} disabled={closing} onClick={() => onClose(id)}><FiX aria-hidden="true" /></button>
     </div>
   )
 }

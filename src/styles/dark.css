@@ -1,0 +1,98 @@
+/* Fixed artwork keeps its original colors; interface controls share the dark palette. */
+[data-theme='dark'] .header-area,
+[data-theme='dark'] .footer-area { background: var(--header-background); }
+[data-theme='dark'] .ticket-footer-inner { background: transparent; }
+[data-theme='dark'] .ticket-hero { background: #232428; color: var(--text-primary); }
+[data-theme='dark'] .ticket-hero-copy > p,
+[data-theme='dark'] .ticket-hero-number { color: var(--text-muted); }
+[data-theme='dark'] .ticket-hero-copy > a { color: var(--primary); border-color: var(--primary); }
+[data-theme='dark'] .ticket-kicker,
+[data-theme='dark'] .event-category,
+[data-theme='dark'] .ticket-results strong,
+[data-theme='dark'] .ticket-header-nav a.active,
+[data-theme='dark'] .ticket-footer-eyebrow,
+[data-theme='dark'] .ticket-footer-sponsor--nova > span,
+[data-theme='dark'] .ticket-footer-sponsor--aurora > span,
+[data-theme='dark'] .ticket-footer-company section > h2 svg,
+[data-theme='dark'] .ticket-bottom-note > svg,
+[data-theme='dark'] .booking-dialog__header > div > span,
+[data-theme='dark'] .booking-dialog__summary h3 span { color: var(--primary); }
+[data-theme='dark'] .ticket-header-nav a.active::after { background: var(--primary); }
+[data-theme='dark'] .ticket-categories button[aria-pressed='true'],
+[data-theme='dark'] .ticket-main .common-pagination__pages button[aria-current='page'] { background: var(--accent-background); border-color: var(--accent-background); color: var(--accent-text); }
+
+/* A filled call to action remains clear against both table and hover surfaces. */
+[data-theme='dark'] .event-book:not(:disabled),
+[data-theme='dark'] .event-detail-book:not(:disabled),
+[data-theme='dark'] .booking-dialog__done { background: var(--accent-background); border-color: var(--accent-background); color: var(--accent-text); font-weight: 650; }
+[data-theme='dark'] .event-book:not(:disabled):hover,
+[data-theme='dark'] .event-detail-book:not(:disabled):hover,
+[data-theme='dark'] .booking-dialog__done:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+[data-theme='dark'] .event-book:disabled,
+[data-theme='dark'] .event-book:disabled:hover,
+[data-theme='dark'] .event-detail-book:disabled { background: var(--button-disabled-background); border-color: var(--border-color); color: var(--button-disabled-text); opacity: 1; }
+[data-theme='dark'] .ticket-search { background: var(--input-background); }
+[data-theme='dark'] .ticket-search input::placeholder { color: var(--text-muted); opacity: 1; }
+[data-theme='dark'] .ticket-results select,
+[data-theme='dark'] .language-switcher select { background: var(--input-background); color: var(--text-primary); }
+[data-theme='dark'] .is-signed-in .ticket-header-avatar { background: #3d4270; color: #d9dcff; border-color: #727bea; }
+[data-theme='dark'] .brand-logo { --brand-logo-text: #f2f3f5; }
+[data-theme='dark'] .brand-logo__name > span { color: #a8afff; }
+[data-theme='dark'] .brand-logo__icon { background: #5865f2; }
+[data-theme='dark'] .common-slider__controls > button { color: var(--text-primary); border-color: var(--border-color); background: var(--surface); }
+[data-theme='dark'] .common-slider__controls > button:hover { background: var(--surface-raised); }
+[data-theme='dark'] .common-slider__dots button::after { background: #6d6f78; }
+[data-theme='dark'] .common-slider__dots button[aria-current='true']::after { background: var(--primary); }
+[data-theme='dark'] .common-slider__counter { color: var(--text-primary); }
+[data-theme='dark'] .common-slider__counter span { color: var(--text-muted); }
+[data-theme='dark'] .ticket-footer-sponsor { opacity: 1; }
+[data-theme='dark'] .ticket-footer-bottom a:hover { color: var(--primary); }
+
+[data-theme='dark'] .seat-map__stage { background: linear-gradient(130deg, #45496c, #292b43); color: var(--text-primary); box-shadow: none; }
+[data-theme='dark'] .seat-map__stage span { color: #d0d4f2; }
+[data-theme='dark'] .seat-map__seat.is-selected,
+[data-theme='dark'] .seat-map__legend .seat-map__swatch--selected { background: var(--accent-background); border-color: #a8afff; color: #fff; }
+[data-theme='dark'] .seat-map__seat.is-selected { box-shadow: 0 0 0 2px #a8afff; }
+[data-theme='dark'] .seat-map__seat.is-reserved,
+[data-theme='dark'] .seat-map__legend .seat-map__swatch--reserved { background: #404249; border-color: #5c5f66; color: #b5bac1; }
+
+[data-theme='dark'] .signin-page { background: var(--background); color: var(--text-primary); }
+[data-theme='dark'] .signin-header,
+[data-theme='dark'] .signin-footer,
+[data-theme='dark'] .signin-member-note { border-color: var(--border-color); }
+[data-theme='dark'] .signin-header .language-switcher { --surface: #2b2d31; --text-primary: #f2f3f5; --text-secondary: #dbdee1; }
+[data-theme='dark'] .signin-eyebrow { color: var(--primary); }
+[data-theme='dark'] .signin-intro-description,
+[data-theme='dark'] .signin-header-caption,
+[data-theme='dark'] .signin-form-heading > p:last-child,
+[data-theme='dark'] .signin-remember,
+[data-theme='dark'] .signin-member-note strong,
+[data-theme='dark'] .signin-message { color: var(--text-secondary); }
+[data-theme='dark'] .signin-security,
+[data-theme='dark'] .signin-footer,
+[data-theme='dark'] .signin-member-note p,
+[data-theme='dark'] .signin-categories,
+[data-theme='dark'] .signin-password-toggle { color: var(--text-muted); }
+[data-theme='dark'] .signin-form .common-input__label { color: var(--text-secondary); }
+[data-theme='dark'] .signin-form .common-input__field { background: var(--input-background); border-color: var(--border-color); color: var(--text-primary); }
+[data-theme='dark'] .signin-form .common-input__field::placeholder { color: var(--text-muted); }
+[data-theme='dark'] .signin-form .common-input__field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px #a8afff26; }
+[data-theme='dark'] .signin-remember input { accent-color: var(--accent-background); }
+[data-theme='dark'] .signin-submit { background: var(--accent-background); color: #fff; }
+[data-theme='dark'] .signin-submit:hover { background: var(--accent-hover); }
+
+[data-theme='dark'] :is(.header-area, .footer-area, .ticket-main, .booking-dialog, .seat-map, .signin-page, .common-slider, .language-switcher) :is(button, a, select, input):focus-visible,
+[data-theme='dark'] .ticket-search:focus-within,
+[data-theme='dark'] .seat-map__scroll:focus-visible,
+[data-theme='dark'] .common-grid__scroll:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
+
+/* Keep legacy base styles in sync with the active theme. */
+[data-theme='dark'] body { background-image: none; }
+[data-theme='dark'] .ticket-hero h1,
+[data-theme='dark'] .ticket-section-heading h2,
+[data-theme='dark'] .event-dialog h2,
+[data-theme='dark'] .booking-dialog h2,
+[data-theme='dark'] .booking-dialog h3,
+[data-theme='dark'] .signin-form-heading h2,
+[data-theme='dark'] .signin-intro h1 { color: var(--text-primary); }
+[data-theme='dark'] .ticket-feature-title small { color: #f2f3f5; }

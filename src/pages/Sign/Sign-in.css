@@ -8,6 +8,7 @@
   -webkit-font-smoothing: antialiased;
 }
 .signin-header {
+  --brand-logo-text: #17243b;
   min-height: 90px;
   padding: 24px max(40px, calc((100vw - 1160px) / 2));
   display: flex;
@@ -15,9 +16,6 @@
   justify-content: space-between;
   border-bottom: 1px solid #edf0f4;
 }
-.signin-brand { display: inline-flex; align-items: center; gap: 4px; color: #17243b; text-decoration: none; font-size: 23px; font-weight: 800; letter-spacing: -1px; }
-.signin-brand-icon { display: grid; place-items: center; margin-right: 7px; width: 33px; height: 33px; background: #2259dc; color: #fff; border-radius: 6px; font-size: 21px; }
-.signin-brand-accent { color: #2259dc; }
 .signin-header-caption { color: #788291; font-size: 13px; }
 .signin-main { width: min(1080px, 100%); margin: auto; padding: 64px 32px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 100px; align-items: center; }
 .signin-eyebrow { color: #2459ce; font-size: 11px; font-weight: 700; letter-spacing: 2px; margin: 0 0 20px; }
@@ -63,7 +61,8 @@
   .signin-stage-title { font-size: 16px; }
 }
 @media (max-width: 680px) {
-  .signin-header { min-height: 76px; padding: 20px 24px; }
+  .signin-header {
+  --brand-logo-text: #17243b; min-height: 76px; padding: 20px 24px; }
   .signin-header-caption { display: none; }
   .signin-main { display: block; max-width: 440px; padding: 44px 24px; }
   .signin-intro { display: none; }
@@ -72,3 +71,4 @@
   .signin-footer { margin: 0 24px; justify-content: center; text-align: center; }
   .signin-footer > span:last-child { display: none; }
 }
+

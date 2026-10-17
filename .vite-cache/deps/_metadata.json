@@ -1,91 +1,91 @@
 {
-  "hash": "d5aad238",
+  "hash": "485cc8ad",
   "configHash": "f05b6b2d",
-  "lockfileHash": "2547d735",
-  "browserHash": "6e12709e",
+  "lockfileHash": "bc6157c1",
+  "browserHash": "da4551d4",
   "optimized": {
     "axios": {
       "src": "../../node_modules/.pnpm/axios@1.20.0_debug@4.4.3_su_6186274800c1ea3a60f3ca401ef76104/node_modules/axios/index.js",
       "file": "axios.js",
-      "fileHash": "fcec70d4",
+      "fileHash": "aaf44731",
       "needsInterop": false
     },
     "dayjs": {
       "src": "../../node_modules/.pnpm/dayjs@1.11.23/node_modules/dayjs/dayjs.min.js",
       "file": "dayjs.js",
-      "fileHash": "f6873c44",
+      "fileHash": "67f65b7c",
       "needsInterop": true
+    },
+    "i18next": {
+      "src": "../../node_modules/.pnpm/i18next@26.4.7_typescript@5.9.3/node_modules/i18next/dist/esm/i18next.js",
+      "file": "i18next.js",
+      "fileHash": "0fa35d63",
+      "needsInterop": false
     },
     "react-dom": {
       "src": "../../node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/index.js",
       "file": "react-dom.js",
-      "fileHash": "d7c43d8e",
+      "fileHash": "df2e6202",
       "needsInterop": true
     },
     "react-dom/client": {
       "src": "../../node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "54f304ef",
+      "fileHash": "7a3d1c24",
       "needsInterop": true
     },
-    "react-icons/bs": {
-      "src": "../../node_modules/.pnpm/react-icons@5.7.0_react@19.2.8/node_modules/react-icons/bs/index.mjs",
-      "file": "react-icons_bs.js",
-      "fileHash": "0fdf5838",
-      "needsInterop": false
-    },
-    "react-icons/fa": {
-      "src": "../../node_modules/.pnpm/react-icons@5.7.0_react@19.2.8/node_modules/react-icons/fa/index.mjs",
-      "file": "react-icons_fa.js",
-      "fileHash": "4caa3dff",
+    "react-i18next": {
+      "src": "../../node_modules/.pnpm/react-i18next@17.0.20_i18ne_ec523e22f39094ee2eb0dea825100a38/node_modules/react-i18next/dist/es/index.js",
+      "file": "react-i18next.js",
+      "fileHash": "c083369b",
       "needsInterop": false
     },
     "react-icons/fi": {
       "src": "../../node_modules/.pnpm/react-icons@5.7.0_react@19.2.8/node_modules/react-icons/fi/index.mjs",
       "file": "react-icons_fi.js",
-      "fileHash": "ee318434",
+      "fileHash": "69373441",
       "needsInterop": false
     },
     "react-icons/hi": {
       "src": "../../node_modules/.pnpm/react-icons@5.7.0_react@19.2.8/node_modules/react-icons/hi/index.mjs",
       "file": "react-icons_hi.js",
-      "fileHash": "114fd0db",
+      "fileHash": "e53e918d",
       "needsInterop": false
     },
     "react-icons/io": {
       "src": "../../node_modules/.pnpm/react-icons@5.7.0_react@19.2.8/node_modules/react-icons/io/index.mjs",
       "file": "react-icons_io.js",
-      "fileHash": "9d1ab457",
+      "fileHash": "bf730ce7",
       "needsInterop": false
     },
     "react-router-dom": {
       "src": "../../node_modules/.pnpm/react-router-dom@7.18.2_rea_248cf0ef508d2f2552e6645095bf60b5/node_modules/react-router-dom/dist/index.mjs",
       "file": "react-router-dom.js",
-      "fileHash": "f38ff4b1",
+      "fileHash": "8ccdb118",
       "needsInterop": false
     },
     "react": {
       "src": "../../node_modules/.pnpm/react@19.2.8/node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "d10f1606",
+      "fileHash": "ed295e2f",
       "needsInterop": true
     },
     "react/jsx-dev-runtime": {
       "src": "../../node_modules/.pnpm/react@19.2.8/node_modules/react/jsx-dev-runtime.js",
       "file": "react_jsx-dev-runtime.js",
-      "fileHash": "9e5acf3d",
+      "fileHash": "d63d14bd",
       "needsInterop": true
     },
     "react/jsx-runtime": {
       "src": "../../node_modules/.pnpm/react@19.2.8/node_modules/react/jsx-runtime.js",
       "file": "react_jsx-runtime.js",
-      "fileHash": "a1010bc4",
+      "fileHash": "993175bf",
       "needsInterop": true
     },
     "recharts": {
       "src": "../../node_modules/.pnpm/recharts@3.10.1_@types+reac_1fa5ffa4912182a4e895e896f75987aa/node_modules/recharts/es6/index.js",
       "file": "recharts.js",
-      "fileHash": "1cf38b52",
+      "fileHash": "5347ef7a",
       "needsInterop": false
     }
   },
@@ -96,6 +96,10 @@
     },
     "rolldown-runtime-DC62tzP2": {
       "file": "rolldown-runtime-DC62tzP2.js",
+      "isDynamicEntry": false
+    },
+    "shim-BdV-xecm": {
+      "file": "shim-BdV-xecm.js",
       "isDynamicEntry": false
     }
   }

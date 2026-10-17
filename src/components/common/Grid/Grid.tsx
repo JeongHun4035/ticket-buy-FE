@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+import { FiInbox } from 'react-icons/fi'
 
 
 import type { GridProps } from '@/types/interfaces/components'
@@ -5,12 +7,13 @@ import type { GridProps } from '@/types/interfaces/components'
 import './Grid.css'
 
 /** Pass only the current page's rows in data; pagination works with local or server data. */
-const Grid = <T = unknown>({ columns, data, rowKey, caption = '데이터 목록', loading = false, emptyMessage = '표시할 데이터가 없습니다.', footer, className = '' }: GridProps<T>) => {
+const Grid = <T = unknown>({ columns, data, rowKey, caption = '데이터 목록', loading = false, emptyMessage = '표시할 데이터가 없습니다.', emptyDescription, emptyAction, footer, className = '' }: GridProps<T>) => {
+  const { t } = useTranslation()
   return (
     <div className={`common-grid ${className}`}>
-      <div className="common-grid__scroll" role="region" aria-label={caption} tabIndex={0} aria-busy={loading}>
+      <div className="common-grid__scroll" role="region" aria-label={t(caption)} tabIndex={0} aria-busy={loading}>
         <table>
-          <caption className="common-grid__caption">{caption}</caption>
+          <caption className="common-grid__caption">{t(caption)}</caption>
           <thead>
             <tr>
               {columns.map(column => <th key={column.key} scope="col" style={{
@@ -22,7 +25,7 @@ const Grid = <T = unknown>({ columns, data, rowKey, caption = '데이터 목록'
           <tbody>
             {loading || data.length === 0 ? (
               <tr><td colSpan={Math.max(1, columns.length)} className="common-grid__empty">
-                {loading ? '데이터를 불러오는 중입니다…' : emptyMessage}
+                {loading ? t('데이터를 불러오는 중입니다…') : <div className="common-grid__empty-content"><FiInbox className="common-grid__empty-icon" aria-hidden="true" /><p className="common-grid__empty-title">{t(emptyMessage)}</p>{emptyDescription && <p className="common-grid__empty-description">{t(emptyDescription)}</p>}{emptyAction && <div className="common-grid__empty-action">{emptyAction}</div>}</div>}
               </td></tr>
             ) : data.map((row, index) => (
               <tr key={rowKey(row)}>
@@ -32,7 +35,7 @@ const Grid = <T = unknown>({ columns, data, rowKey, caption = '데이터 목록'
           </tbody>
         </table>
       </div>
-      <span className="common-grid__caption" role="status">{loading ? '데이터를 불러오는 중입니다.' : data.length === 0 ? emptyMessage : ''}</span>
+      <span className="common-grid__caption" role="status">{loading ? t('데이터를 불러오는 중입니다.') : data.length === 0 ? t(emptyMessage) : ''}</span>
       {footer && <div className="common-grid__footer">{footer}</div>}
     </div>
   )

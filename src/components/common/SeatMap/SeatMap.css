@@ -1,0 +1,27 @@
+﻿.seat-map { color: var(--text-primary); }
+.seat-map__legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; font-size: 11px; color: var(--text-secondary); margin: 4px 0 25px; }
+.seat-map__legend > span { display: inline-flex; align-items: center; gap: 5px; }
+.seat-map__legend i { width: 11px; height: 11px; border-radius: 3px; border: 1px solid #81958d; }
+.seat-map__swatch--VIP { background: #d9c6a2; }
+.seat-map__swatch--R { background: #b5cec2; }
+.seat-map__swatch--S { background: #b9cadb; }
+.seat-map__legend .seat-map__swatch--selected { background: #245b4e; border-color: #245b4e; }
+.seat-map__legend .seat-map__swatch--reserved { background: #dfe3e7; border-color: #dfe3e7; }
+.seat-map__scroll { overflow-x: auto; padding: 4px 4px 18px; }
+.seat-map__layout { min-width: 540px; }
+.seat-map__stage { margin: 0 auto; width: 75%; padding: 19px; border-radius: 5px 5px 50% 50% / 5px 5px 16px 16px; background: linear-gradient(130deg, #304e4a, #163b33); text-align: center; color: #eff5ef; font-size: 16px; letter-spacing: 6px; box-shadow: 0 8px 18px #163b3314; }
+.seat-map__stage span { display: block; margin-top: 7px; letter-spacing: 1px; color: #b5cbbf; font-size: 10px; }
+.seat-map__direction { margin: 16px 0 26px; color: var(--text-muted); text-align: center; font-size: 10px; }
+.seat-map__rows { display: flex; flex-direction: column; gap: 9px; }
+.seat-map__row { display: flex; justify-content: center; align-items: center; gap: 6px; }
+.seat-map__row-label { width: 18px; text-align: center; font-size: 10px; color: var(--text-muted); }
+.seat-map__seat { display: grid; place-items: center; width: 30px; height: 29px; flex-shrink: 0; padding: 0; border: 1px solid transparent; border-bottom-width: 3px; border-radius: 6px 6px 4px 4px; font-size: 9px; font-weight: 600; color: #263f3b; cursor: pointer; transition: transform .15s; }
+.seat-map__seat:nth-of-type(4), .seat-map__seat:nth-of-type(8) { margin-right: 18px; }
+.seat-map__seat--VIP { background: #e8d9be; border-color: #c6ae83; }
+.seat-map__seat--R { background: #c9dfd2; border-color: #9bb7a8; }
+.seat-map__seat--S { background: #d4e1ef; border-color: #a4b9d0; }
+.seat-map__seat:hover:not(:disabled) { transform: translateY(-2px); }
+.seat-map__seat.is-selected { background: #245b4e; border-color: #153b32; color: #fff; }
+.seat-map__seat.is-reserved { background: #e7e9ec; border-color: #d8dce1; color: #9ba4ad; cursor: not-allowed; }
+.seat-map__feedback { min-height: 32px; margin: 15px 0 0; font-size: 11px; text-align: center; color: var(--text-secondary); line-height: 1.7; }
+.seat-map button:focus-visible, .seat-map__scroll:focus-visible { outline: 2px solid #4d8b78; outline-offset: 3px; }

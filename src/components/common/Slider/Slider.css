@@ -1,0 +1,15 @@
+﻿.common-slider { min-width: 0; width: 100%; }
+.common-slider__viewport { overflow: hidden; border-radius: 10px; }
+.common-slider__track { display: flex; transition: transform 600ms cubic-bezier(.22, .61, .36, 1); }
+.common-slider__slide { flex: 0 0 100%; min-width: 0; }
+.common-slider__controls { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+.common-slider__controls > button { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #bccac8; border-radius: 50%; background: transparent; color: #27463f; cursor: pointer; font-size: 15px; }
+.common-slider__controls > button:hover { background: #dae5df; }
+.common-slider__dots { display: flex; gap: 6px; margin-right: auto; }
+.common-slider__dots button { position: relative; width: 24px; height: 30px; border: 0; padding: 0; background: transparent; cursor: pointer; }
+.common-slider__dots button::after { content: ''; position: absolute; height: 4px; left: 0; right: 0; top: 13px; border-radius: 4px; background: #c0cdca; }
+.common-slider__dots button[aria-current='true']::after { background: #285b50; }
+.common-slider__counter { font-size: 11px; color: #294c44; margin-right: 5px; font-variant-numeric: tabular-nums; }
+.common-slider__counter span { color: #7d8d89; }
+.common-slider button:focus-visible { outline: 2px solid #285b50; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .common-slider__track { transition: none; } }

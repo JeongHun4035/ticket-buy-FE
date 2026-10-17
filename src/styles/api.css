@@ -1,0 +1,28 @@
+﻿.api-error { color: #b42332; background: #fff1f2; border: 1px solid #f5b4bd; padding: 12px 16px; margin: 12px 0; border-radius: 6px; font-size: 13px; overflow-wrap: anywhere; line-height: 1.8; }
+.api-error button { margin-left: 10px; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; cursor: pointer; }
+.api-secondary { display: inline-flex; align-items: center; justify-content: center; padding: 10px 14px; margin-top: 10px; border: 1px solid var(--border-color); border-radius: 5px; background: var(--surface); color: var(--text-primary); cursor: pointer; font: inherit; font-size: 12px; }
+.api-pagination { margin-top: 25px; }
+.performance-select { display: grid; gap: 12px; margin: 20px 0; }
+.performance-select select { width: 100%; padding: 12px; background: var(--background); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 4px; }
+.reservation-success { padding: 32px; line-height: 2; overflow-wrap: anywhere; }
+.reservation-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 22px; margin-bottom: 16px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface); }
+.reservation-card h2 { font-size: 15px; overflow-wrap: anywhere; }
+.reservation-card p { font-size: 12px; color: var(--text-secondary); }
+.reservation-card button + button { margin-left: 8px; }
+.content-editor { display: grid; gap: 15px; }
+.content-editor label { display: grid; gap: 6px; font-size: 13px; }
+.content-editor fieldset { display: grid; gap: 12px; border: 1px solid var(--border-color); padding: 14px; }
+.content-editor :is(input, textarea, select) { width: 100%; padding: 10px; border: 1px solid var(--border-color); background: var(--background); color: var(--text-primary); border-radius: 4px; font: inherit; }
+.content-editor textarea { min-height: 100px; resize: vertical; }
+button:disabled { cursor: not-allowed; }
+.booking-dialog__done:disabled, .event-detail-book:disabled, .signin-submit:disabled { opacity: .5; cursor: not-allowed; }
+.event-poster-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.event-poster:has(.event-poster-image) > :not(.event-poster-image) { visibility: hidden; }
+[data-theme='dark'] .api-error { background: #45272f; color: #ffc7ce; border-color: #895061; }
+@media (max-width: 1200px) { .ticket-header-inner { flex-wrap: wrap; } .ticket-header-nav { order: 3; width: 100%; } }
+
+.reservations-grid table { min-width: 900px; }
+.reservations-grid .api-secondary { margin: 0; white-space: nowrap; }
+.reservation-status { display: inline-block; white-space: nowrap; font-size: 12px; font-weight: 600; color: #28715e; }
+.reservation-status[data-status='CANCELLED'] { color: var(--text-secondary); }
+[data-theme='dark'] .reservation-status[data-status='CONFIRMED'] { color: var(--primary); }

@@ -58,45 +58,49 @@ body {
 }
 
 [data-theme='dark'] {
-  --background: #111827;
-  --surface: #1f2937;
+  --color-bg: 49 51 56;
+  --color-surface: 43 45 49;
+  --color-surface-soft: 56 58 64;
+  --color-border: 78 80 88;
+  --color-foreground: 242 243 245;
+  --color-muted: 181 186 193;
+  --color-primary: 168 175 255;
+  color-scheme: dark;
+  --background: #313338;
+  --surface: #2b2d31;
+  --surface-raised: #383a40;
+  --input-background: #1e1f22;
+  --header-background: #2b2d31;
+  --footer-background: #232428;
 
-  --header-background: #182235;
-  --footer-background: #182235;
+  --text-primary: #f2f3f5;
+  --text-secondary: #dbdee1;
+  --text-muted: #b5bac1;
+  --border-color: #4e5058;
+  --primary: #a8afff;
+  --accent-background: #5865f2;
+  --accent-hover: #4752c4;
+  --accent-text: #ffffff;
+  --focus-color: #b8beff;
 
-  /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
+  --header-shadow: 0 2px 8px rgb(0 0 0 / 16%);
+  --footer-shadow: 0 -2px 8px rgb(0 0 0 / 12%);
+  --hover-background: #383a40;
 
-  --border-color: #475569;
-
-  --header-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --footer-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
-
-  --hover-background: rgba(255, 255, 255, 0.08);
-
-  --primary: #61dafb;
-
-  /* Button */
-  --button-primary-background: #f8fafc;
-  --button-primary-text: #111827;
-  --button-primary-hover: #e2e8f0;
-
-  --button-secondary-background: #1f2937;
-  --button-secondary-text: #ffffff;
-  --button-secondary-hover: #334155;
-  --button-secondary-border: #475569;
-
+  --button-primary-background: #5865f2;
+  --button-primary-text: #ffffff;
+  --button-primary-hover: #4752c4;
+  --button-secondary-background: #383a40;
+  --button-secondary-text: #f2f3f5;
+  --button-secondary-hover: #404249;
+  --button-secondary-border: #4e5058;
   --button-outline-background: transparent;
-  --button-outline-text: #ffffff;
-  --button-outline-hover: #334155;
-  --button-outline-border: #475569;
-
-  --button-danger-background: #ef4444;
+  --button-outline-text: #f2f3f5;
+  --button-outline-hover: #404249;
+  --button-outline-border: #4e5058;
+  --button-danger-background: #da373c;
   --button-danger-text: #ffffff;
-  --button-danger-hover: #dc2626;
-
-  --button-disabled-background: #475569;
-  --button-disabled-text: #cbd5e1;
+  --button-danger-hover: #a12828;
+  --button-disabled-background: #404249;
+  --button-disabled-text: #b5bac1;
 }

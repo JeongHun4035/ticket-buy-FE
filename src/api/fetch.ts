@@ -13,6 +13,7 @@ export async function fetchRequest<T = unknown>(path: string, options: RequestOp
 
   try {
     const response = await fetch(getRequestURL(path, options.params), {
+      credentials: 'include',
       method: options.method ?? 'GET',
       headers,
       signal,

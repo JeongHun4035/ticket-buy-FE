@@ -2,9 +2,12 @@ import { Outlet } from 'react-router-dom'
 
 import Footer from '@/components/layouts/Footer/Footer'
 import Header from '@/components/layouts/Header/Header'
+import useHashScroll from '@/hooks/useHashScroll'
 import './Layout.css'
 
 const Layout: React.FC = () => {
+  useHashScroll()
+
   return (
     <div className="layout">
       <header className="header">

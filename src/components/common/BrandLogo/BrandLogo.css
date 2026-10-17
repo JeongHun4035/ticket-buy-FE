@@ -1,0 +1,27 @@
+﻿.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  color: var(--brand-logo-text, var(--text-primary, #17243b));
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.brand-logo__icon { display: grid; place-items: center; width: 33px; height: 33px; border-radius: 6px; background: #2259dc; color: #fff; font-size: 21px; }
+.brand-logo__name { display: inline-flex; gap: 4px; }
+.brand-logo__name > span { color: #2259dc; }
+.brand-logo:focus-visible { outline: 2px solid #2259dc; outline-offset: 5px; }
+@media (max-width: 680px) {
+  .brand-logo { font-size: 18px; gap: 7px; letter-spacing: -.8px; }
+  .brand-logo__icon { width: 28px; height: 28px; font-size: 18px; }
+  .brand-logo__name { gap: 3px; }
+}
+@media (max-width: 380px) {
+  .brand-logo { font-size: 16px; gap: 5px; }
+  .brand-logo__icon { width: 24px; height: 24px; font-size: 16px; }
+}

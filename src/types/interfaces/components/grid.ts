@@ -15,6 +15,8 @@ export interface GridProps<T> {
   caption?: string,
   loading?: boolean,
   emptyMessage?: string,
+  emptyDescription?: string,
+  emptyAction?: ReactNode,
   footer?: ReactNode,
   className?: string,
 }
