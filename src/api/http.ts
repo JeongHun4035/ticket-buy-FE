@@ -1,11 +1,12 @@
 export interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   params?: Record<string, string | number | boolean | null | undefined>,
-  /** JSON으로 전송할 요청 데이터 */
+  /** JSON 데이터 또는 multipart FormData */
   body?: unknown,
   headers?: Record<string, string>,
   signal?: AbortSignal,
   timeout?: number,
+  retryAuth?: boolean,
 }
 
 export const apiConfig = {
@@ -16,12 +17,16 @@ export const apiConfig = {
 export class ApiError extends Error {
   readonly status: number
   readonly data: unknown
+  readonly retryAfterSeconds: number | null
 
-  constructor(status: number, data: unknown) {
+  constructor(status: number, data: unknown, headers?: Headers) {
     super(`API 요청에 실패했습니다. (${status})`)
     this.name = 'ApiError'
     this.status = status
     this.data = data
+    const retry = headers?.get('Retry-After')
+    const seconds = retry ? (/^\d+$/.test(retry) ? Number(retry) : Math.ceil((Date.parse(retry) - Date.now()) / 1000)) : NaN
+    this.retryAfterSeconds = Number.isFinite(seconds) ? Math.max(0, seconds) : null
   }
 }
 

@@ -4,6 +4,8 @@ export const ROUTE_PATHS = {
   MAIN: '/',
   RESERVATIONS: '/reservations',
   ADMIN: '/admin',
+  ADMIN_EVENT_NEW: '/admin/events/new',
+  PAYMENTS: '/payments',
   SUPPORT: '/support',
   BOARD: '/board',
   EXAMPLES: '/examples',

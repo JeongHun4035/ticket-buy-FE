@@ -1,0 +1,10 @@
+﻿.payment-demo-note { display: flex; align-items: start; gap: 12px; padding: 18px 20px; margin-bottom: 30px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface); }
+.payment-demo-note > svg { flex-shrink: 0; color: var(--primary); font-size: 22px; margin-top: 3px; }
+.payment-demo-note p { color: var(--text-secondary); font-size: 13px; line-height: 1.9; margin: 0; }
+.payment-grid table { min-width: 650px; }
+.payment-grid .api-secondary { margin: 0; gap: 6px; }
+.payment-card-name { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+.payment-card-name svg { color: var(--primary); font-size: 20px; }
+.payment-last4 { white-space: nowrap; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+.payment-default { padding: 5px 10px; border-radius: 20px; background: #eef0ff; color: #3443a8; font-size: 12px; font-weight: 600; }
+[data-theme='dark'] .payment-default { background: #3d4270; color: #d9dcff; }

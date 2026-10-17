@@ -5,6 +5,7 @@
   grade: 'VIP' | 'R' | 'S',
   price: number,
   reserved: boolean,
+  section?: string,
 }
 
 export interface SeatMapProps {
@@ -18,4 +19,11 @@ export interface SeatMapProps {
 export interface SeatMapFeedback {
   key: string,
   seat: Seat | null,
+}
+
+export interface SeatSection {
+  id: string,
+  name: string,
+  seats: Seat[],
+  available: number,
 }

@@ -77,6 +77,7 @@ const Admin = () => {
     }
   }
   return <div className="service-page"><header className="service-page-heading"><span>CONTENT MANAGEMENT</span><h1>{t('콘텐츠 관리')}</h1><p>{t('등록·수정·삭제는 관리자 권한이 필요합니다.')}</p></header>
+    <Link className="api-secondary" to="/admin/events/new">{t('행사 등록')}</Link>
     {!auth.user ? <Link to="/sign-in">{t('로그인이 필요합니다.')}</Link> : <>
       <div className="service-section-heading"><select aria-label={t('분류')} value={kind} onChange={event => {
         setKind(event.target.value as 'posts' | 'faqs'); setPage(1)

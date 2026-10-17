@@ -1,12 +1,13 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiArrowDown, FiArrowRight, FiCalendar, FiMapPin, FiSearch, FiX } from 'react-icons/fi'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { formatDate, toTicketEvent } from '@/api/adapters'
 import { getErrorMessage } from '@/api/client'
 import { getCategories, getEvent, getEvents, getFeaturedEvents } from '@/api/ticket'
 import BookingFlow from '@/components/booking/BookingFlow'
+import EventImage from '@/components/common/EventImage/EventImage'
 import Grid from '@/components/common/Grid/Grid'
 import Pagination from '@/components/common/Pagination/Pagination'
 import Slider from '@/components/common/Slider/Slider'
@@ -21,11 +22,7 @@ import type { GridColumn } from '@/types/interfaces/components'
 import type { EventPosterProps, TicketEvent } from '@/types/interfaces/pages/main'
 
 const EventPoster = ({ event }: EventPosterProps) => (
-  <div className={`event-poster event-poster--${event.art}`} aria-hidden="true">
-    {event.posterUrl && <img className="event-poster-image" src={event.posterUrl} alt="" />}<span className="event-poster-label">TICKET BUY PRESENTS</span>
-    <strong>{event.headline}</strong>
-    <span className="event-poster-year">2026 — LIVE YOUR MOMENT</span>
-  </div>
+  <div className="event-poster"><EventImage className="event-poster-image" src={event.posterUrl} title={event.title} /></div>
 )
 
 const Main: React.FC = () => {
@@ -44,6 +41,8 @@ const Main: React.FC = () => {
   const navigate = useNavigate()
   const [actionError, setActionError] = useState('')
   const [detailLoading, setDetailLoading] = useState(false)
+  const [searchParams] = useSearchParams()
+  const requestedEvent = searchParams.get('eventId')
   const language = i18n.resolvedLanguage ?? 'ko'
   const loadEvents = useCallback((signal: AbortSignal) => getEvents({
     q: query,
@@ -88,6 +87,30 @@ const Main: React.FC = () => {
       setDetailLoading(false)
     }
   }
+  useEffect(() => {
+    if (!requestedEvent || !/^\d+$/.test(requestedEvent) || !Number.isSafeInteger(Number(requestedEvent))) return undefined
+    let active = true
+    void getEvent(Number(requestedEvent)).then(event => {
+      if (active) {
+        setSelected(toTicketEvent(event)); dialog.current?.showModal()
+      }
+    })
+      .catch((error: unknown) => {
+        if (active) setActionError(getErrorMessage(error))
+      })
+    return () => {
+      active = false
+    }
+  }, [requestedEvent, language])
+  const reloadEvents = list.reload
+  const reloadFeatured = featured.reload
+  useEffect(() => {
+    const reload = () => {
+      reloadEvents(); reloadFeatured()
+    }
+    window.addEventListener('ticket-buy:events-updated', reload)
+    return () => window.removeEventListener('ticket-buy:events-updated', reload)
+  }, [reloadEvents, reloadFeatured])
   const startBooking = (event: TicketEvent) => {
     if (!auth.user) {
       toast(t('로그인이 필요합니다.'), { variant: 'info' })
@@ -135,10 +158,10 @@ const Main: React.FC = () => {
       <section className="ticket-hero" aria-labelledby="hero-title">
         <div className="ticket-hero-copy"><span className="ticket-kicker">CURATED FOR YOUR NEXT MOMENT</span><h1 id="hero-title">{t('일상 너머의 설렘,')}<br />{t('다음 무대를 만나세요.')}</h1><p>{t('좋아하는 아티스트의 무대부터 새로운 영감의 전시까지.')}<br />{t('당신을 기다리는 특별한 순간을 발견하세요.')}</p><a href="#event-list">{t('행사 둘러보기')}<FiArrowDown aria-hidden="true" /></a><span className="ticket-hero-number">01 / YOUR NEXT EXPERIENCE</span></div>
         <Slider items={featuredEvents} getKey={event => event.id} label={t('핵심 추천 행사')} renderItem={event => (
-          <button className={`ticket-feature ticket-feature--${event.art}`} type="button" onClick={() => {
+          <button className="ticket-feature" type="button" onClick={() => {
             void openEvent(event)
           }} aria-label={t('{{title}} 상세 보기', { title: t(event.title) })}>
-            <img className="ticket-feature-image" src={event.posterUrl || '/images/featured-forest.svg'} alt="" />
+            <EventImage className="ticket-feature-image" src={event.posterUrl} title={event.title} />
             <span className="ticket-feature-badge">EDITOR’S PICK · {t(event.category)}</span>
             <span className="ticket-feature-title">{event.headline}<small>{t(event.title)}</small></span>
             <span className="ticket-feature-bottom"><span>{formatDate(event.date, language)}<br /><small>{t(event.venue)}</small></span><span className="ticket-feature-arrow"><FiArrowRight aria-hidden="true" /></span></span>

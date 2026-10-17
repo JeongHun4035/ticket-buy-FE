@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiSearch, FiX } from 'react-icons/fi'
 
-import { formatDate } from '@/api/adapters'
+import { formatDateOnly } from '@/api/adapters'
 import { getErrorMessage } from '@/api/client'
 import { getContents, getPost } from '@/api/ticket'
 import Grid from '@/components/common/Grid/Grid'
@@ -65,8 +65,8 @@ const Board = () => {
     {
       key: 'date',
       header: t('등록일'),
-      width: 180,
-      render: post => formatDate(post.date, language),
+      width: 130,
+      render: post => formatDateOnly(post.date),
     },
   ]
   return <div className="service-page">
@@ -78,7 +78,7 @@ const Board = () => {
     <Grid loading={posts.loading} className="service-board" columns={columns} data={posts.data?.items ?? []} rowKey={post => post.id} caption={t('게시판')} emptyMessage={t('검색 결과가 없습니다.')} footer={<Pagination value={posts.data?.total ?? 0} page={page} limit={limit} onChange={(next, size) => {
       setPage(next); setLimit(size)
     }} />} />
-    <dialog ref={dialog} className="service-post-dialog" aria-labelledby="post-title" onClose={() => setSelected(null)}><button className="service-dialog-close" type="button" aria-label={t('닫기')} onClick={() => dialog.current?.close()}><FiX /></button>{selected && <><span className="service-post-category">{t(selected.category)} · {formatDate(selected.date, language)}</span><h2 id="post-title">{selected.title}</h2><p>{selected.content}</p></>}</dialog>
+    <dialog ref={dialog} className="service-post-dialog" aria-labelledby="post-title" onClose={() => setSelected(null)}><button className="service-dialog-close" type="button" aria-label={t('닫기')} onClick={() => dialog.current?.close()}><FiX /></button>{selected && <><span className="service-post-category">{t(selected.category)} · {formatDateOnly(selected.date)}</span><h2 id="post-title">{selected.title}</h2><p>{selected.content}</p></>}</dialog>
   </div>
 }
 export default Board

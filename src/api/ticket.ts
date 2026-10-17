@@ -1,6 +1,9 @@
 import i18n from '@/i18n'
+import { retryDelay } from '@/utils/retryDelay'
 
 import { request } from './client'
+import { ApiError } from './http'
+
 
 import type { ApiContent, ApiEvent, ApiPage, ApiSeat, ApiUser, Category, ContentInput, EventQuery, Performance, QueueEntry, Reservation, SeatHold, SupportInfo } from '@/types/interfaces/api/ticket'
 
@@ -45,10 +48,20 @@ export const getPerformances = async (id: number, signal?: AbortSignal) => {
 export const joinQueue = (id: number) => request<QueueEntry>(`/performances/${id}/queue`, { method: 'POST' }, true)
 export const getQueue = (id: number, signal?: AbortSignal) => request<QueueEntry>(`/performances/${id}/queue/me`, signal ? { signal } : {}, true)
 export const leaveQueue = (id: number) => request<void>(`/performances/${id}/queue/me`, { method: 'DELETE' }, true)
-export const getSeats = (id: number, token: string, signal?: AbortSignal) => request<ApiPage<ApiSeat>>(`/performances/${id}/seats`, {
+const requestSeats = (id: number, token: string, signal?: AbortSignal) => request<ApiPage<ApiSeat>>(`/performances/${id}/seats`, {
   headers: { 'X-Admission-Token': token },
   ...(signal ? { signal } : {}),
 }, true)
+// A read can be retried safely; never replay holds or reservations for rate limiting.
+export const getSeats = async (id: number, token: string, signal?: AbortSignal): Promise<ApiPage<ApiSeat>> => {
+  try {
+    return await requestSeats(id, token, signal)
+  } catch (error) {
+    if (!(error instanceof ApiError) || error.status !== 429) throw error
+    await retryDelay(Math.max(1, error.retryAfterSeconds ?? 2) * 1000, signal)
+    return requestSeats(id, token, signal)
+  }
+}
 export const createHold = (id: number, token: string, seatIds: string[]) => request<SeatHold>(`/performances/${id}/holds`, {
   method: 'POST',
   headers: { 'X-Admission-Token': token },

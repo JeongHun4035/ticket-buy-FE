@@ -1,9 +1,11 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
+import RequireAdmin from '@/components/auth/RequireAdmin'
 import RequireAuth from '@/components/auth/RequireAuth'
 import Layout from '@/layouts/Layout/Layout'
 import NotFound from '@/NotFound'
 import Admin from '@/pages/Admin/Admin'
+import EventCreate from '@/pages/Admin/EventCreate'
 import Board from '@/pages/Board/Board'
 import ChartPage from '@/pages/Examples/children/Chart/Chart'
 import ConfirmPage from '@/pages/Examples/children/Confirm/Confirm'
@@ -16,7 +18,9 @@ import SelectPage from '@/pages/Examples/children/Select/Select'
 import ToastPage from '@/pages/Examples/children/Toast/Toast'
 import ExampleDetail from '@/pages/Examples/ExampleDetail'
 import Examples from '@/pages/Examples/Examples'
+import SeatMapExample from '@/pages/Examples/SeatMapExample'
 import Main from '@/pages/Main/Main'
+import Payments from '@/pages/Payments/Payments'
 import Reservations from '@/pages/Reservations/Reservations'
 import SignIn from '@/pages/Sign/Sign-in'
 import SignUp from '@/pages/Sign/Sign-up'
@@ -34,8 +38,9 @@ const AppRouter = () => {
       {/* 레이아웃 라우트 */}
       <Route element={<Layout />}>
         <Route element={<RequireAuth />}>
+          <Route path={ROUTE_PATHS.PAYMENTS} element={<Payments />} />
           <Route path={ROUTE_PATHS.RESERVATIONS} element={<Reservations />} />
-          <Route path={ROUTE_PATHS.ADMIN} element={<Admin />} />
+          <Route element={<RequireAdmin />}><Route path={ROUTE_PATHS.ADMIN} element={<Admin />} /><Route path={ROUTE_PATHS.ADMIN_EVENT_NEW} element={<EventCreate />} /></Route>
           <Route path={ROUTE_PATHS.SUPPORT} element={<Support />} />
         </Route>
         <Route path={ROUTE_PATHS.BOARD} element={<Board />} />
@@ -47,6 +52,7 @@ const AppRouter = () => {
         <Route path="/pagination" element={<Navigate to={ROUTE_PATHS.PAGINATION} replace />} />
         <Route path={ROUTE_PATHS.EXAMPLES} element={<ExampleDetail />} >
           <Route index element={<Examples />} />
+          <Route path="seats" element={<SeatMapExample />} />
           <Route path={ROUTE_PATHS.CHART} element={<ChartPage />} />
           <Route path="infinite-scroll" element={<InfiniteScrollPage />} />
           <Route path={ROUTE_PATHS.GRID} element={<GridPage />} />

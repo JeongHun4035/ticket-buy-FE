@@ -181,3 +181,5 @@ VITE_API_BASE_URL=http://localhost:8080
 - [공통 HTTP 요청 유틸리티](src/api/README.md)
 - [다국어 리소스 관리](src/i18n/README.md)
 - [목 데이터 fixtures](src/mocks/README.md)
+
+관리자 행사 등록과 포스터 업로드·표시 기능의 사용법 및 검증 방법은 [행사 등록 안내](docs/ADMIN_EVENTS.md)를 참고하세요. 관리자 등록 경로는 `/admin/events/new`입니다.

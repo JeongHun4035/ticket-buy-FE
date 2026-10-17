@@ -1,0 +1,4 @@
+.common-event-image { background: #263445; transition: opacity .2s; }
+.common-event-image[data-loaded='false'] { opacity: .35; }
+.common-event-image[data-loaded='true'] { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .common-event-image { transition: none; } }

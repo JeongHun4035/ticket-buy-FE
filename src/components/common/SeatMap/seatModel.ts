@@ -15,3 +15,20 @@ export const createExampleSeats = (basePrice: number): Seat[] =>
         reserved: (rowIndex * 12 + columnIndex) % 7 === 3 || (rowIndex * 12 + columnIndex) % 11 === 5,
       }
     })).flat()
+
+// Isolated preview data; never submit these IDs to booking APIs.
+export const createVenueExampleSeats = (capacity: number): Seat[] =>
+  Array.from({ length: capacity }, (_, index) => {
+    const block = Math.floor(index / 200)
+    const offset = index % 200
+    const grade = block % 3 === 0 ? 'VIP' : block % 3 === 1 ? 'R' : 'S'
+    return {
+      id: 'preview-' + index,
+      section: String(block + 1).padStart(3, '0'),
+      row: String.fromCharCode(65 + Math.floor(offset / 20)),
+      number: offset % 20 + 1,
+      grade,
+      price: grade === 'VIP' ? 150000 : grade === 'R' ? 120000 : 90000,
+      reserved: index % 7 === 3,
+    }
+  })

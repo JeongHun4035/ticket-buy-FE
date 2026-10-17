@@ -90,3 +90,9 @@
 @media (max-width: 600px) { .ticket-feature { min-height: 300px; } }
 
 .ticket-feature-title small { color: inherit; opacity: 1; }
+
+.event-poster { padding: 0; background: #243247; }
+.event-poster::before { display: none; }
+.ticket-feature { color: #fff; }
+.ticket-feature::after { background: linear-gradient(90deg, #0b1326db, #0b132650); }
+.ticket-feature-bottom small { color: #edf1ff; }

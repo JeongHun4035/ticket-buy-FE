@@ -2,7 +2,7 @@
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: 'api-integration.spec.mjs',
+  testMatch: '*.spec.mjs',
   workers: 1,
   timeout: 60000,
   use: {

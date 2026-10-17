@@ -7,6 +7,7 @@ export interface ApiPage<T> {
 export interface ApiUser {
   id: string,
   name: string,
+  role: string,
 }
 export interface AuthSession {
   accessToken: string,

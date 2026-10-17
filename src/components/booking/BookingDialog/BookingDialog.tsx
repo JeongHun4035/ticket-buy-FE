@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiX } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
@@ -32,10 +32,10 @@ const BookingDialog = ({ event, performance, admission, onClose }: SeatBookingPr
   const load = useCallback((signal: AbortSignal) => getSeats(performance.id, token, signal), [performance.id, token])
   const query = useApiQuery(load)
   const money = (value: number) => formatCurrency(value, i18n.resolvedLanguage)
-  const seats = (query.data?.items ?? []).map(seat => ({
+  const seats = useMemo(() => (query.data?.items ?? []).map(seat => ({
     ...seat,
     reserved: seat.status !== 'AVAILABLE',
-  }))
+  })), [query.data])
   const chosen = hold?.seats ?? seats.filter(seat => selectedIds.includes(seat.id))
   const total = hold?.total ?? chosen.reduce((sum, seat) => sum + seat.price, 0)
   const seconds = hold ? Math.max(0, Math.ceil((Date.parse(hold.expiresAt) - now) / 1000)) : null

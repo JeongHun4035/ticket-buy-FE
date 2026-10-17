@@ -64,7 +64,7 @@ export const request = async <T = unknown>(path: string, options: RequestOptions
   try {
     return await run()
   } catch (error) {
-    if (hasKnownSession() && !path.startsWith('/auth/') && (authenticated || !!accessToken) && error instanceof ApiError && error.status === 401) {
+    if (options.retryAuth !== false && hasKnownSession() && !path.startsWith('/auth/') && (authenticated || !!accessToken) && error instanceof ApiError && error.status === 401) {
       await refreshSession()
       return run()
     }

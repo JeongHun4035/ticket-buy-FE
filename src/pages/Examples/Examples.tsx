@@ -6,6 +6,10 @@ import { ROUTE_PATHS } from '@/routes/route'
 const ExampleItems: React.FC = () => {
   const exampleItems = [
     {
+      id: 'seats',
+      title: 'Seat Map',
+    },
+    {
       id: 'chart',
       title: 'Chart',
       path: ROUTE_PATHS.CHART,

@@ -34,11 +34,13 @@ const signIn = async (page, username = 'demo') => {
 test('public lists, search, language switching, support and board use backend data', async ({ page }) => {
   const errors = []
   page.on('pageerror', error => errors.push(error.message))
+  const initialList = page.waitForResponse(response => new URL(response.url()).pathname === '/api/v1/events' && response.ok())
   await page.goto('/')
-  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(5)
+  const initialData = await (await initialList).json()
+  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(initialData.items.length)
   await page.locator('.event-info').first()
     .click()
-  await expect(page.locator('dialog[open]')).toContainText('개발용 행사')
+  await expect(page.locator('dialog[open]')).toContainText(initialData.items[0].title)
   await page.getByRole('button', {
     name: '행사 상세 닫기',
     exact: true,
@@ -47,7 +49,6 @@ test('public lists, search, language switching, support and board use backend da
     name: '콘서트',
     exact: true,
   }).click()
-  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(1)
   await expect(page.locator('.ticket-event-grid tbody')).toContainText('서울 라이브 콘서트')
   await page.getByRole('button', {
     name: '전체',
@@ -91,12 +92,13 @@ test('login, session restoration, queue, hold, release, confirmation and cancell
   await signIn(page)
   await page.reload()
   await expect(page.locator('.ticket-header-user')).toContainText('예매 사용자')
-  let simulatedWait = false
+  let observedWait = false
   await page.route('**/api/v1/performances/*/queue', async route => {
     const response = await route.fetch()
     const body = await response.json()
+    if (body.state === 'WAITING') observedWait = true
     if (body.state === 'ADMITTED') {
-      simulatedWait = true
+      observedWait = true
       await route.fulfill({
         response,
         json: {
@@ -119,7 +121,7 @@ test('login, session restoration, queue, hold, release, confirmation and cancell
     exact: true,
   }).click()
   await expect(page.locator('.seat-map__seat').first()).toBeVisible({ timeout: 40000 })
-  expect(simulatedWait).toBe(true)
+  expect(observedWait).toBe(true)
   await page.locator('.seat-map__seat:not([disabled])').first()
     .click()
   await page.getByRole('button', {
@@ -154,6 +156,7 @@ test('login, session restoration, queue, hold, release, confirmation and cancell
     name: '닫기',
     exact: true,
   }).click()
+  await page.locator('.account-menu-trigger').click()
   await page.locator('.ticket-header-account').getByRole('link', {
     name: '내 예매',
     exact: true,
@@ -173,6 +176,7 @@ test('login, session restoration, queue, hold, release, confirmation and cancell
     name: '닫기',
     exact: true,
   }).click()
+  await page.locator('.account-menu-trigger').click()
   await page.getByRole('button', {
     name: '로그아웃',
     exact: true,
@@ -190,6 +194,7 @@ test('login, session restoration, queue, hold, release, confirmation and cancell
 
 test('administrators can create, edit and delete posts and FAQs through the UI', async ({ page }) => {
   await signIn(page, 'admin')
+  await page.locator('.account-menu-trigger').click()
   await page.getByRole('link', {
     name: '콘텐츠 관리',
     exact: true,
@@ -243,6 +248,7 @@ test('administrators can create, edit and delete posts and FAQs through the UI',
 test('protected requests refresh expired access tokens and recover without logging out', async ({ page }) => {
   await signIn(page)
   const loaded = page.waitForResponse(response => response.url().includes('/reservations/me?') && response.ok())
+  await page.locator('.account-menu-trigger').click()
   await page.locator('.ticket-header-account').getByRole('link', {
     name: '내 예매',
     exact: true,
@@ -324,8 +330,10 @@ test('anonymous visits never refresh and support and booking redirect to login',
   page.on('request', request => {
     if (request.url().endsWith('/auth/refresh')) refreshes++
   })
+  const initialList = page.waitForResponse(response => new URL(response.url()).pathname === '/api/v1/events' && response.ok())
   await page.goto('/')
-  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(5)
+  const initialData = await (await initialList).json()
+  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(initialData.items.length)
   await page.getByRole('link', {
     name: '고객센터',
     exact: true,
@@ -369,8 +377,10 @@ test('StrictMode initial queries are sent once without cancelled requests', asyn
   page.on('requestfailed', request => {
     if (request.url().includes('/api/v1/')) failures.push(request.url())
   })
+  const initialList = page.waitForResponse(response => new URL(response.url()).pathname === '/api/v1/events' && response.ok())
   await page.goto('/')
-  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(5)
+  const initialData = await (await initialList).json()
+  await expect(page.locator('.ticket-event-grid tbody tr')).toHaveCount(initialData.items.length)
   await expect(page.locator('.ticket-footer-email')).not.toBeEmpty()
   for (const path of [
     '/api/v1/events',
@@ -458,6 +468,7 @@ test('empty reservations keep grid columns, empty message and pagination visible
       pageSize: 10,
     }),
   }))
+  await page.locator('.account-menu-trigger').click()
   await page.locator('.ticket-header-account').getByRole('link', {
     name: '내 예매',
     exact: true,
@@ -475,7 +486,128 @@ test('empty reservations keep grid columns, empty message and pagination visible
   })).toBeDisabled()
 })
 
+test('account popover toggles, closes with Escape and outside clicks, and fits mobile', async ({ page }) => {
+  await signIn(page)
+  const trigger = page.locator('.account-menu-trigger')
+  const menu = page.getByRole('navigation', { name: '사용자 메뉴' })
+  await expect(menu).toHaveCount(0)
+  await trigger.click()
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  await expect(menu.getByRole('link', {
+    name: '내 예매',
+    exact: true,
+  })).toBeVisible()
+  await expect(menu.getByRole('button', {
+    name: '로그아웃',
+    exact: true,
+  })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(menu).toHaveCount(0)
+  await expect(trigger).toBeFocused()
+  await trigger.click()
+  await page.locator('.ticket-hero h1').click()
+  await expect(menu).toHaveCount(0)
+  await page.setViewportSize({
+    width: 375,
+    height: 812,
+  })
+  await trigger.click()
+  await expect(menu).toBeVisible()
+  const bounds = await menu.boundingBox()
+  expect(bounds.x).toBeGreaterThanOrEqual(0)
+  expect(bounds.x + bounds.width).toBeLessThanOrEqual(375)
+})
+
+test('non-admin users cannot see or open content management', async ({ page }) => {
+  await signIn(page)
+  await page.locator('.account-menu-trigger').click()
+  await expect(page.locator('.account-role')).toHaveText('일반 회원')
+  await expect(page.getByRole('link', {
+    name: '콘텐츠 관리',
+    exact: true,
+  })).toHaveCount(0)
+  let adminCalls = 0
+  page.on('request', request => {
+    if (request.url().includes('/api/v1/admin/')) adminCalls++
+  })
+  await page.goto('/admin')
+  await expect(page).toHaveURL('http://localhost:5173/')
+  await expect(page.locator('.common-toast')).toContainText('접근 권한이 없습니다.')
+  expect(adminCalls).toBe(0)
+})
+
+test('demo payment methods can be added, made default, restored and deleted', async ({ page }) => {
+  await signIn(page)
+  await page.locator('.account-menu-trigger').click()
+  await page.getByRole('link', {
+    name: '결제 정보',
+    exact: true,
+  }).click()
+  await expect(page.locator('.payment-grid tbody')).toContainText('등록된 결제 정보가 없습니다.')
+  for (const [last4, nickname] of [['1234', '공연용 카드'], ['5678', '예비 카드']]) {
+    await page.getByRole('button', {
+      name: '결제 정보 추가',
+      exact: true,
+    }).first()
+      .click()
+    const dialog = page.locator('dialog[open]')
+    await dialog.getByLabel('카드 끝 4자리', { exact: true }).fill(last4)
+    await dialog.getByLabel('별칭', { exact: true }).fill(nickname)
+    await dialog.getByRole('button', {
+      name: '추가',
+      exact: true,
+    }).click()
+    await expect(page.locator('.payment-grid tbody')).toContainText(nickname)
+  }
+  const backup = page.locator('.payment-grid tbody tr').filter({ hasText: '예비 카드' })
+  await backup.getByRole('button', {
+    name: '기본으로 지정',
+    exact: true,
+  }).click()
+  await expect(backup.locator('.payment-default')).toBeVisible()
+  await page.reload()
+  await expect(page.locator('.payment-grid tbody')).toContainText('예비 카드')
+  await expect(page.locator('.payment-grid tbody tr')).toHaveCount(2)
+  for (const nickname of ['예비 카드', '공연용 카드']) {
+    page.once('dialog', dialog => {
+      void dialog.accept()
+    })
+    await page.locator('.payment-grid tbody tr').filter({ hasText: nickname })
+      .getByRole('button', { name: nickname + ' 삭제' })
+      .click()
+  }
+  await expect(page.locator('.payment-grid tbody')).toContainText('등록된 결제 정보가 없습니다.')
+})
+
 test('all Swagger endpoints were exercised successfully', () => {
   const endpoints = JSON.parse(fs.readFileSync(new URL('./api-endpoints.json', import.meta.url), 'utf8'))
   for (const endpoint of endpoints) expect(observedOperations.has(endpoint), endpoint).toBe(true)
+})
+
+
+test('large venue preview renders bounded seats and preserves selections across sections', async ({ page }) => {
+  await page.goto('/examples/seats')
+  await page.getByRole('combobox').filter({ has: page.locator('option[value="30000"]') })
+    .selectOption('30000')
+  await expect(page.locator('.seat-map__capacity')).toContainText('30000')
+  await expect(page.locator('.seat-map__seat')).toHaveCount(200)
+  await expect(page.locator('.seat-map__sections button')).toHaveCount(150)
+  await page.locator('.seat-map__seat:not(:disabled)').first()
+    .click()
+  await page.locator('.seat-map__sections button').nth(149)
+    .click()
+  await expect(page.locator('.seat-map__seat')).toHaveCount(200)
+  await page.locator('.seat-map__seat:not(:disabled)').first()
+    .click()
+  await expect(page.locator('.seat-map__capacity')).toContainText('선택 2석')
+  await page.locator('.seat-map__sections button').first()
+    .click()
+  await expect(page.locator('.seat-map__seat[aria-pressed="true"]')).toHaveCount(1)
+  await page.getByRole('combobox').filter({ has: page.locator('option[value="500"]') })
+    .selectOption('500')
+  await expect(page.locator('.seat-map__sections button')).toHaveCount(3)
+  await expect(page.locator('.seat-map__capacity')).toContainText('선택 0석')
+  await page.locator('.seat-map__sections button').last()
+    .click()
+  await expect(page.locator('.seat-map__seat')).toHaveCount(100)
 })

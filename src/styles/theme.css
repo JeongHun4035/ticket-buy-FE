@@ -23,7 +23,7 @@ body {
 
   --text-primary: #111827;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-muted: #64748b;
 
   --border-color: #dbe3ea;
 
@@ -32,7 +32,7 @@ body {
 
   --hover-background: rgba(255, 255, 255, 0.6);
 
-  --primary: #61dafb;
+  --primary: #2259dc;
 
     /* Button */
   --button-primary-background: #111827;
