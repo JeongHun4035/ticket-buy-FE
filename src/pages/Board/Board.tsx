@@ -1,22 +1,22 @@
 import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiSearch, FiX } from 'react-icons/fi'
+import { FiX } from 'react-icons/fi'
 
-import { formatDateOnly } from '@/api/adapters'
 import { getErrorMessage } from '@/api/client'
-import { getContents, getPost } from '@/api/ticket'
+import { getContents, getPost } from '@/api/contents'
 import Grid from '@/components/common/Grid/Grid'
 import Pagination from '@/components/common/Pagination/Pagination'
+import SearchField from '@/components/common/SearchField/SearchField'
 import useApiQuery from '@/hooks/useApiQuery'
+import useSearchQuery from '@/hooks/useSearchQuery'
+import { formatDateOnly } from '@/utils/dateTime'
 
-import type { ApiContent } from '@/types/interfaces/api/ticket'
+import type { ApiContent } from '@/types/interfaces/api/contents'
 import type { GridColumn } from '@/types/interfaces/components'
-
-import '../Support/Support.css'
 
 const Board = () => {
   const { t, i18n } = useTranslation()
-  const [query, setQuery] = useState('')
+  const { input: query, setInput: setQuery, query: submittedQuery, submit } = useSearchQuery()
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const [selected, setSelected] = useState<ApiContent | null>(null)
@@ -24,8 +24,8 @@ const Board = () => {
   const [busy, setBusy] = useState(false)
   const dialog = useRef<HTMLDialogElement>(null)
   const language = i18n.resolvedLanguage
-  const load = useCallback((signal: AbortSignal) => getContents('posts', query, page, limit, signal, language ?? 'ko'), [
-    query,
+  const load = useCallback((signal: AbortSignal) => getContents('posts', submittedQuery.value, page, limit, signal, language ?? 'ko'), [
+    submittedQuery,
     page,
     limit,
     language,
@@ -71,9 +71,9 @@ const Board = () => {
   ]
   return <div className="service-page">
     <header className="service-page-heading"><span>NEWS & NOTICE</span><h1>{t('게시판')}</h1><p>{t('티켓바이의 새로운 소식과 이용 안내를 확인하세요.')}</p></header>
-    <div className="service-section-heading"><h2>{t('공지 및 소식')}</h2><label className="service-search"><FiSearch aria-hidden="true" /><input maxLength={100} value={query} onChange={event => {
-      setQuery(event.target.value); setPage(1)
-    }} placeholder={t('게시글 검색')} aria-label={t('게시글 검색')} /></label></div>
+    <div className="service-section-heading"><h2>{t('공지 및 소식')}</h2><SearchField className="service-search" value={query} onChange={setQuery} onSearch={() => {
+      setPage(1); submit()
+    }} label={t('게시글 검색')} placeholder={t('게시글 검색')} /></div>
     {(posts.error || error) && <div className="api-error" role="alert">{posts.error || error}<button type="button" onClick={posts.reload}>{t('다시 시도')}</button></div>}
     <Grid loading={posts.loading} className="service-board" columns={columns} data={posts.data?.items ?? []} rowKey={post => post.id} caption={t('게시판')} emptyMessage={t('검색 결과가 없습니다.')} footer={<Pagination value={posts.data?.total ?? 0} page={page} limit={limit} onChange={(next, size) => {
       setPage(next); setLimit(size)

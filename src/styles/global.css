@@ -28,4 +28,75 @@ dialog[open] {
   max-height: calc(100dvh - 32px);
   overflow-y: auto;
   overscroll-behavior: contain;
+  clip-path: inset(0 round var(--dialog-radius, 12px));
+}
+dialog.waiting-room { --dialog-radius: 16px; }
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.dialog-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  min-width: 88px;
+  max-width: 100%;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+
+.dialog-button--primary { background: var(--button-primary-background); color: var(--button-primary-text); }
+.dialog-button--primary:hover:not(:disabled) { background: var(--button-primary-hover); }
+.dialog-button--secondary { background: var(--button-secondary-background); color: var(--button-secondary-text); border-color: var(--button-secondary-border); }
+.dialog-button--secondary:hover:not(:disabled) { background: var(--button-secondary-hover); }
+.dialog-button--danger { background: var(--button-danger-background); color: var(--button-danger-text); }
+.dialog-button--danger:hover:not(:disabled) { background: var(--button-danger-hover); }
+.dialog-button:disabled { opacity: .45; cursor: not-allowed; }
+.dialog-button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+:is(.popup-footer, .confirm-footer, .popup-footer-actions, .confirm-footer-actions) { flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+
+/* Keep modal scrollbars quiet and consistent, including nested seat lists. */
+:where(dialog, .popup-container, .confirm-container),
+:where(dialog, .popup-container, .confirm-container) * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) transparent;
+}
+
+:where(dialog, .popup-container, .confirm-container)::-webkit-scrollbar,
+:where(dialog, .popup-container, .confirm-container) *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+:where(dialog, .popup-container, .confirm-container)::-webkit-scrollbar-thumb,
+:where(dialog, .popup-container, .confirm-container) *::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+:where(dialog, .popup-container, .confirm-container)::-webkit-scrollbar-track,
+:where(dialog, .popup-container, .confirm-container) *::-webkit-scrollbar-track,
+:where(dialog, .popup-container, .confirm-container)::-webkit-scrollbar-corner,
+:where(dialog, .popup-container, .confirm-container) *::-webkit-scrollbar-corner {
+  background: transparent;
 }

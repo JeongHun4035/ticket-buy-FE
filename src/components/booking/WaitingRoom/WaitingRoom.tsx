@@ -1,9 +1,8 @@
-﻿import { useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+﻿import { useTranslation } from 'react-i18next'
 import { FiClock, FiUsers, FiX } from 'react-icons/fi'
 
-import { getErrorMessage } from '@/api/client'
-import { getQueue, leaveQueue } from '@/api/ticket'
+import useModalDialog from '@/hooks/useModalDialog'
+import useWaitingQueue from '@/hooks/useWaitingQueue'
 
 import type { WaitingRoomProps } from '@/types/interfaces/components/waitingRoom'
 
@@ -11,65 +10,13 @@ import './WaitingRoom.css'
 
 const WaitingRoom = ({ event, performance, initialQueue, onAdmit, onCancel }: WaitingRoomProps) => {
   const { t, i18n } = useTranslation()
-  const dialog = useRef<HTMLDialogElement>(null)
-  const cancelling = useRef(false)
-  const [entry, setEntry] = useState(initialQueue)
-  const [error, setError] = useState('')
-  const [retry, setRetry] = useState(0)
-  const [busy, setBusy] = useState(false)
-
-  useEffect(() => {
-    const element = dialog.current
-    if (element && !element.open) element.showModal()
-    const oldOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = oldOverflow
-    }
-  }, [])
-
-  useEffect(() => {
-    const controller = new AbortController()
-    let timer: ReturnType<typeof setTimeout>
-    const receive = async () => {
-      try {
-        const next = await getQueue(performance.id, controller.signal)
-        if (controller.signal.aborted || cancelling.current) return
-        setError('')
-        setEntry(next)
-        if (next.state === 'ADMITTED' && next.admissionToken) {
-          onAdmit(next); return
-        }
-        if (next.state === 'WAITING') timer = setTimeout(() => {
-          void receive()
-        }, Math.max(1, next.pollAfterSeconds) * 1000)
-      } catch (reason) {
-        if (!controller.signal.aborted && !cancelling.current) setError(getErrorMessage(reason))
-      }
-    }
-    timer = setTimeout(() => {
-      void receive()
-    }, retry ? 0 : Math.max(1, initialQueue.pollAfterSeconds) * 1000)
-    return () => {
-      controller.abort(); clearTimeout(timer)
-    }
-  }, [
-    performance.id,
-    initialQueue.pollAfterSeconds,
+  const dialog = useModalDialog()
+  const { entry, error, busy, cancel, retry } = useWaitingQueue({
+    performance,
+    initialQueue,
     onAdmit,
-    retry,
-  ])
-
-  const cancel = async () => {
-    if (cancelling.current) return
-    cancelling.current = true
-    setBusy(true)
-    try {
-      await leaveQueue(performance.id); onCancel()
-    } catch (reason) {
-      setError(getErrorMessage(reason)); cancelling.current = false; setBusy(false)
-    }
-  }
+    onCancel,
+  })
   return <dialog ref={dialog} className="waiting-room" aria-labelledby="waiting-title" onCancel={event => {
     event.preventDefault(); void cancel()
   }}>
@@ -77,13 +24,13 @@ const WaitingRoom = ({ event, performance, initialQueue, onAdmit, onCancel }: Wa
       void cancel()
     }}><FiX aria-hidden="true" /></button>
     <div className="waiting-room__icon"><FiUsers aria-hidden="true" /></div><p className="waiting-room__eyebrow">TICKET BUY · WAITING ROOM</p><h2 id="waiting-title">{t('잠시만 기다려주세요.')}</h2><p className="waiting-room__description">{t('접속자가 많아 순서대로 입장하고 있습니다.')}</p><div className="waiting-room__event">{event.title}</div>
-    <div className="waiting-room__position"><span>{t('나의 대기번호')}</span><strong>{new Intl.NumberFormat(i18n.resolvedLanguage).format(entry.ticketNumber)}<small>{t('번')}</small></strong></div>
+    <div className="waiting-room__position"><span>{t('현재 대기순서')}</span><strong>{new Intl.NumberFormat(i18n.resolvedLanguage).format(entry.position)}<small>{t('번')}</small></strong></div>
     <p>{t('앞선 대기자 {{count}}명', { count: entry.aheadCount })}</p><div className="waiting-room__estimate"><FiClock aria-hidden="true" /><span>{entry.estimatedWaitSeconds === null ? t('예상 대기시간을 계산 중입니다.') : t('예상 대기시간 약 {{seconds}}초', { seconds: entry.estimatedWaitSeconds })}</span></div>
     <p className="waiting-room__notice" role="status">{t(entry.state === 'WAITING' ? '순서가 되면 좌석 선택 화면으로 자동 이동합니다.' : '대기가 만료되거나 취소되었습니다. 다시 예매해주세요.')}</p>
-    {error && <div className="api-error" role="alert">{error}<button type="button" onClick={() => setRetry(value => value + 1)}>{t('다시 시도')}</button></div>}
-    <div className="waiting-room__actions"><button type="button" disabled={busy} onClick={() => {
+    {error && <div className="api-error" role="alert">{error}<button type="button" onClick={retry}>{t('다시 시도')}</button></div>}
+    <footer className="dialog-actions"><button className="dialog-button dialog-button--danger" type="button" disabled={busy} onClick={() => {
       void cancel()
-    }}>{t('대기 취소')}</button></div>
+    }}>{t('대기 취소')}</button></footer>
   </dialog>
 }
 export default WaitingRoom

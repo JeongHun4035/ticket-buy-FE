@@ -8,10 +8,9 @@ import { groupSeatSections } from './seatSections'
 import type { Seat, SeatMapProps } from '@/types/interfaces/components'
 import type { SeatMapFeedback } from '@/types/interfaces/components/seatMap'
 
-
 import './SeatMap.css'
 
-const SeatMap = ({ seats, selectedIds, onChange, maxSelection = 4, disabled = false }: SeatMapProps) => {
+const SeatMap = ({ seats, totalSeats = seats.length, availableSeats, selectedIds, onChange, maxSelection = 4, disabled = false }: SeatMapProps) => {
   const { t, i18n } = useTranslation()
   const [feedback, setFeedback] = useState<SeatMapFeedback | null>(null)
   const [sectionId, setSectionId] = useState('')
@@ -48,7 +47,10 @@ const SeatMap = ({ seats, selectedIds, onChange, maxSelection = 4, disabled = fa
 
   return (
     <div className="seat-map">
-      <div className="seat-map__capacity"><strong>{t('전체 {{count}}석', { count: seats.length })}</strong><span>{t('선택 {{count}}석', { count: selectedIds.length })}</span></div>
+      <div className="seat-map__capacity"><strong>{t('전체 {{count}}석', { count: totalSeats })}</strong>{availableSeats !== undefined && <span>{t('잔여 {{available}} / {{total}}석', {
+        available: availableSeats,
+        total: totalSeats,
+      })}</span>}<span>{t('선택 {{count}}석', { count: selectedIds.length })}</span></div>
       {sections.length > 1 && <>
         <p className="seat-map__section-help">{t('구역을 선택한 뒤 좌석을 선택해주세요.')}</p>
         <div className="seat-map__overview-stage">STAGE</div>

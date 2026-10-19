@@ -1,23 +1,12 @@
 import {
-  type CSSProperties,
   useState,
 } from 'react'
 
 import Button from '@/components/common/Button/Button'
 import Popup from '@/components/common/Popup/Popup'
 
-import type { PopupSize } from '@/types/interfaces/components'
+import type { PopupSampleId, PopupSample } from '@/types/interfaces/pages/examplePopup'
 import '../../Examples.css'
-
-type PopupSampleId = PopupSize | 'custom'
-
-interface PopupSample {
-  id: PopupSampleId,
-  title: string,
-  size?: PopupSize,
-  className?: string,
-  style?: CSSProperties,
-}
 
 const PopupPage: React.FC = () => {
   const [openPopup, setOpenPopup] =

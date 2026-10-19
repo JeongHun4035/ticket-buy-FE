@@ -1,7 +1,6 @@
 import {
   useEffect,
   useState,
-  type ReactNode,
 } from 'react'
 
 import {
@@ -9,9 +8,7 @@ import {
   type Theme,
 } from './ThemeContext'
 
-interface ThemeProviderProps {
-  children: ReactNode,
-}
+import type { ProviderProps } from '@/types/interfaces/contexts/provider'
 
 const getInitialTheme = (): Theme => {
   const savedTheme = localStorage.getItem('theme')
@@ -23,7 +20,7 @@ const getInitialTheme = (): Theme => {
   return 'light'
 }
 
-const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+const ThemeProvider: React.FC<ProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
 
   const toggleTheme = () => {

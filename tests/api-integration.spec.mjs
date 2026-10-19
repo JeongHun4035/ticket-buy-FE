@@ -54,9 +54,23 @@ test('public lists, search, language switching, support and board use backend da
     name: '전체',
     exact: true,
   }).click()
-  await page.getByLabel('공연명 또는 장소 검색').fill('별빛')
+  await page.getByRole('textbox', {
+    name: '공연명 또는 장소 검색',
+    exact: true,
+  }).fill('별빛')
+  await page.getByRole('textbox', {
+    name: '공연명 또는 장소 검색',
+    exact: true,
+  }).press('Enter')
   await expect(page.locator('.ticket-event-grid tbody')).toContainText('별빛 뮤지컬')
-  await page.getByLabel('공연명 또는 장소 검색').fill('')
+  await page.getByRole('textbox', {
+    name: '공연명 또는 장소 검색',
+    exact: true,
+  }).fill('')
+  await page.getByRole('button', {
+    name: '검색',
+    exact: true,
+  }).click()
   await page.getByLabel('언어 변경').selectOption('en')
   await expect(page.locator('.ticket-event-grid tbody')).not.toContainText('서울 라이브 콘서트')
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
@@ -92,36 +106,32 @@ test('login, session restoration, queue, hold, release, confirmation and cancell
   await signIn(page)
   await page.reload()
   await expect(page.locator('.ticket-header-user')).toContainText('예매 사용자')
-  let observedWait = false
-  await page.route('**/api/v1/performances/*/queue', async route => {
-    const response = await route.fetch()
-    const body = await response.json()
-    if (body.state === 'WAITING') observedWait = true
-    if (body.state === 'ADMITTED') {
-      observedWait = true
-      await route.fulfill({
-        response,
-        json: {
-          ...body,
-          state: 'WAITING',
-          admissionToken: null,
-          pollAfterSeconds: 1,
-        },
-      })
-    } else await route.fulfill({ response })
-  })
   await page.getByRole('button', {
     name: '예매하기',
     exact: true,
   }).first()
     .click()
   await page.getByLabel('공연 일시').selectOption({ index: 1 })
+  const queueResponse = page.waitForResponse(response => response.request().method() === 'POST' && /\/performances\/\d+\/queue$/.test(new URL(response.url()).pathname) && response.ok())
   await page.getByRole('button', {
     name: '대기열 입장',
     exact: true,
   }).click()
   await expect(page.locator('.seat-map__seat').first()).toBeVisible({ timeout: 40000 })
-  expect(observedWait).toBe(true)
+  // Verify the real status endpoint even when admission required no UI polling.
+  const joined = await queueResponse
+  const currentQueue = await page.evaluate(async ({ url, authorization }) => {
+    const response = await fetch(url + '/me', {
+      credentials: 'include',
+      headers: { Authorization: authorization },
+    })
+    if (!response.ok) throw new Error('Queue status failed: ' + response.status)
+    return response.json()
+  }, {
+    url: joined.url(),
+    authorization: joined.request().headers().authorization,
+  })
+  expect(currentQueue.state).toBe('ADMITTED')
   await page.locator('.seat-map__seat:not([disabled])').first()
     .click()
   await page.getByRole('button', {
@@ -589,7 +599,7 @@ test('large venue preview renders bounded seats and preserves selections across 
   await page.goto('/examples/seats')
   await page.getByRole('combobox').filter({ has: page.locator('option[value="30000"]') })
     .selectOption('30000')
-  await expect(page.locator('.seat-map__capacity')).toContainText('30000')
+  await expect(page.locator('.seat-map__capacity')).toContainText('30,000')
   await expect(page.locator('.seat-map__seat')).toHaveCount(200)
   await expect(page.locator('.seat-map__sections button')).toHaveCount(150)
   await page.locator('.seat-map__seat:not(:disabled)').first()

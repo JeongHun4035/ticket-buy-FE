@@ -24,7 +24,7 @@
   width: 360px;
   min-height: 260px;
   max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
 
   padding: 24px;
 
@@ -67,12 +67,15 @@
 
 .confirm-content {
   flex: 1;
+  min-height: 0;
 
   padding: 20px;
 
   color: var(--text-secondary);
 
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .confirm-footer {
@@ -134,5 +137,5 @@
   display: flex;
   align-items: center;
 
-  gap: 4px;
+  gap: 10px;
 }

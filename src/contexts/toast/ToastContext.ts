@@ -1,13 +1,7 @@
 import { createContext } from 'react'
 
-export type ToastVariant = 'success' | 'error' | 'info'
+import type { ToastContextValue } from '@/types/interfaces/contexts/toast'
 
-export interface ToastOptions {
-  variant?: ToastVariant,
-  duration?: number,
-}
+export type { ToastVariant, ToastOptions, ToastContextValue } from '@/types/interfaces/contexts/toast'
 
-export const ToastContext = createContext<{
-  toast: (message: string, options?: ToastOptions) => number,
-  dismiss: (id: number) => void,
-} | null>(null)
+export const ToastContext = createContext<ToastContextValue | null>(null)

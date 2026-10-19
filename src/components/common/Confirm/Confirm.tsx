@@ -69,6 +69,7 @@ const Confirm = ({
               <Button
                 size="sm"
                 onClick={onClose}
+                variant="secondary"
               >
                 Cancel
               </Button>

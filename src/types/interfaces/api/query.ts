@@ -5,3 +5,9 @@
   promise: Promise<T>,
   abortTimer: ReturnType<typeof setTimeout> | null,
 }
+
+export interface QueryState<T> {
+  data: T | null,
+  loading: boolean,
+  error: string,
+}

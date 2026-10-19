@@ -1,35 +1,12 @@
-.service-page { width: 100%; max-width: 1220px; margin: 0 auto; padding: 48px 40px 64px; color: var(--text-primary); font-family: 'Pretendard', 'Noto Sans KR', sans-serif; }
-.service-page-heading { margin-bottom: 35px; }
-.service-page-heading > span { display: inline-block; font-size: 12px; line-height: 1.6; letter-spacing: 1.4px; color: var(--primary); font-weight: 750; }
-.service-page-heading h1 { color: var(--text-primary); font-size: 32px; margin: 12px 0; letter-spacing: -1px; }
-.service-page-heading p { color: var(--text-secondary); font-size: 14px; }
 .service-contact { display: flex; align-items: center; gap: 22px; padding: 28px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--surface); margin-bottom: 40px; }
 .service-contact > svg { font-size: 36px; color: #648e85; }
 .service-contact h2 { font-size: 13px; color: var(--text-primary); margin: 0 0 8px; }
 .service-contact strong { font-size: 28px; }
 .service-contact p { color: var(--text-secondary); font-size: 12px; line-height: 1.8; }
 .service-contact > span { margin-left: auto; color: var(--text-secondary); font-size: 13px; overflow-wrap: anywhere; }
-.service-section-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
-.service-section-heading h2 { margin: 0; color: var(--text-primary); font-size: 20px; }
-.service-search { display: flex; align-items: center; gap: 8px; border: 1px solid var(--border-color); padding: 10px 12px; border-radius: 5px; background: var(--surface); color: var(--text-secondary); }
-.service-search input { width: 190px; background: transparent; color: var(--text-primary); border: 0; outline: none; font: inherit; font-size: 12px; }
-.service-search input::placeholder { color: var(--text-muted); }
 .service-faqs { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--surface); }
 .service-faqs details + details { border-top: 1px solid var(--border-color); }
 .service-faqs summary { padding: 22px; font-size: 14px; font-weight: 600; cursor: pointer; }
 .service-faqs details > p { margin: 0; padding: 0 22px 24px; font-size: 13px; line-height: 1.9; color: var(--text-secondary); }
-.service-note { margin: 20px 0 0; font-size: 11px; color: var(--text-muted); line-height: 1.8; }
-.service-empty { padding: 30px; text-align: center; color: var(--text-secondary); }
-.service-board table { min-width: 620px; }
-.service-post-category { color: #4a8174; font-size: 12px; }
-.service-post-title { border: 0; padding: 5px 0; text-align: left; background: transparent; color: var(--text-primary); cursor: pointer; font: inherit; }
-.service-post-title:hover { text-decoration: underline; }
-.service-post-dialog { position: relative; width: min(620px, calc(100% - 32px)); max-height: calc(100dvh - 48px); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 12px; background: var(--surface); color: var(--text-primary); }
-.service-post-dialog::backdrop { background: #101827b0; }
-.service-post-dialog h2 { font-size: 24px; color: var(--text-primary); margin: 20px 0; }
-.service-post-dialog p { color: var(--text-secondary); font-size: 14px; line-height: 2; }
-.service-dialog-close { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 32px; height: 32px; border: 0; background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 20px; }
-.service-page :is(button, summary):focus-visible, .service-search:focus-within, .service-post-dialog button:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
-[data-theme='dark'] .service-post-category, [data-theme='dark'] .service-contact > svg { color: var(--primary); }
-@media (max-width: 1100px) { .ticket-header-inner { flex-wrap: wrap; } .ticket-header-nav { order: 3; width: 100%; } }
-@media (max-width: 680px) { .service-page { padding: 30px 16px 40px; } .service-section-heading { align-items: start; flex-direction: column; } .service-search { width: 100%; } .service-search input { width: 100%; } .service-contact { flex-wrap: wrap; padding: 22px; } .service-contact > span { margin-left: 0; width: 100%; } }
+[data-theme='dark'] .service-contact > svg { color: var(--primary); }
+@media (max-width: 680px) { .service-contact { flex-wrap: wrap; padding: 22px; } .service-contact > span { margin-left: 0; width: 100%; } }

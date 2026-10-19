@@ -5,7 +5,7 @@ import { ApiError } from './http'
 
 import type { RequestOptions } from './http'
 import type { SignUpRequest } from '@/types/interfaces/api/auth'
-import type { ApiUser , AuthSession } from '@/types/interfaces/api/ticket'
+import type { ApiUser, AuthSession } from '@/types/interfaces/api/users'
 
 let accessToken: string | null = null
 let refreshing: Promise<AuthSession> | null = null

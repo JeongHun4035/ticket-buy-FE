@@ -1,98 +1,29 @@
-import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiCreditCard, FiPlus, FiShield, FiTrash2, FiX } from 'react-icons/fi'
 
 import Grid from '@/components/common/Grid/Grid'
-import useAuth from '@/hooks/useAuth'
-import { useToast } from '@/hooks/useToast'
-import { demoCardIssuers, loadDemoPayments, saveDemoPayments } from '@/services/demoPayments'
+import useDemoPayments from '@/hooks/useDemoPayments'
+import { demoCardIssuers } from '@/services/demoPayments'
 
 import type { GridColumn } from '@/types/interfaces/components'
-import type { DemoPaymentForm, DemoPaymentMethod } from '@/types/interfaces/pages/payments'
+import type { DemoPaymentMethod } from '@/types/interfaces/pages/payments'
 
-import '../Support/Support.css'
 import './Payments.css'
 
 const Payments = () => {
   const { t } = useTranslation()
-  const { user } = useAuth()
-  const userId = user?.id
-  const { toast } = useToast()
-  const dialog = useRef<HTMLDialogElement>(null)
-  const [methods, setMethods] = useState<DemoPaymentMethod[]>([])
-  const [form, setForm] = useState<DemoPaymentForm>({
-    issuer: demoCardIssuers[0],
-    last4: '',
-    nickname: '',
-  })
-  const [error, setError] = useState('')
-  const [formError, setFormError] = useState('')
-
-  useEffect(() => {
-    setMethods([])
-    if (!userId) return
-    try {
-      setMethods(loadDemoPayments(userId)); setError('')
-    } catch {
-      setError(t('브라우저 저장소의 결제 정보를 불러올 수 없습니다.'))
-    }
-  }, [userId, t])
-
-  const persist = (next: DemoPaymentMethod[]) => {
-    if (!user) return false
-    try {
-      saveDemoPayments(user.id, next); setMethods(next); setError(''); return true
-    } catch {
-      setError(t('브라우저 저장소에 저장할 수 없습니다.')); return false
-    }
-  }
-  const open = () => {
-    setForm({
-      issuer: demoCardIssuers[0],
-      last4: '',
-      nickname: '',
-    })
-    setFormError('')
-    dialog.current?.showModal()
-  }
-  const add = () => {
-    if (!/^\d{4}$/.test(form.last4)) {
-      setFormError(t('카드 끝 4자리를 숫자로 입력해주세요.')); return
-    }
-    const nickname = form.nickname.trim()
-    if (!nickname || nickname.length > 30) {
-      setFormError(t('별칭을 1~30자로 입력해주세요.')); return
-    }
-    if (methods.some(item => item.issuer === form.issuer && item.last4 === form.last4)) {
-      setFormError(t('같은 카드사와 끝 4자리의 데모 정보가 이미 있습니다.')); return
-    }
-    const next: DemoPaymentMethod = {
-      id: crypto.randomUUID(),
-      issuer: form.issuer,
-      last4: form.last4,
-      nickname,
-      isDefault: methods.length === 0,
-      createdAt: new Date().toISOString(),
-    }
-    if (persist([...methods, next])) {
-      dialog.current?.close(); toast(t('데모 결제 정보가 추가되었습니다.'), { variant: 'success' })
-    } else setFormError(t('브라우저 저장소에 저장할 수 없습니다.'))
-  }
-  const makeDefault = (id: string) => {
-    if (persist(methods.map(item => ({
-      ...item,
-      isDefault: item.id === id,
-    })))) toast(t('기본 결제 정보가 변경되었습니다.'), { variant: 'success' })
-  }
-  const remove = (method: DemoPaymentMethod) => {
-    if (!window.confirm(t('데모 결제 정보를 삭제하시겠습니까?'))) return
-    const next = methods.filter(item => item.id !== method.id)
-    if (method.isDefault && next[0]) next[0] = {
-      ...next[0],
-      isDefault: true,
-    }
-    if (persist(next)) toast(t('데모 결제 정보가 삭제되었습니다.'), { variant: 'success' })
-  }
+  const {
+    dialog,
+    methods,
+    form,
+    setForm,
+    error,
+    formError,
+    open,
+    add,
+    makeDefault,
+    remove,
+  } = useDemoPayments()
   const columns: GridColumn<DemoPaymentMethod>[] = [
     {
       key: 'card',
@@ -139,7 +70,7 @@ const Payments = () => {
         })} /></label><label>{t('별칭')}<input maxLength={30} autoComplete="off" value={form.nickname} onChange={event => setForm({
           ...form,
           nickname: event.target.value,
-        })} placeholder={t('예: 공연 예매용')} /></label>{formError && <p className="api-error" role="alert">{formError}</p>}<button type="submit" className="event-detail-book">{t('추가')}</button><button className="api-secondary" type="button" onClick={() => dialog.current?.close()}>{t('닫기')}</button></form>
+        })} placeholder={t('예: 공연 예매용')} /></label>{formError && <p className="api-error" role="alert">{formError}</p>}<footer className="dialog-actions"><button className="dialog-button dialog-button--secondary" type="button" onClick={() => dialog.current?.close()}>{t('닫기')}</button><button type="submit" className="dialog-button dialog-button--primary">{t('추가')}</button></footer></form>
     </dialog>
   </div>
 }

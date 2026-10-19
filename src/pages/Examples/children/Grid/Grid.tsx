@@ -6,17 +6,9 @@ import { getPagination } from '@/components/common/Pagination/paginationModel'
 import { formatNumber } from '@/utils/number'
 
 import type { GridColumn } from '@/types/interfaces/components'
+import type { Member } from '@/types/interfaces/pages/exampleGrid'
 
 import './Grid.css'
-
-interface Member {
-  id: number,
-  name: string,
-  email: string,
-  team: string,
-  active: boolean,
-  amount: number,
-}
 
 const names = [
   '김민준',

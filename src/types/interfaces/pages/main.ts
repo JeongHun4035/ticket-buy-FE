@@ -1,3 +1,5 @@
+import type { RefObject } from 'react'
+
 export interface TicketEvent {
   id: number,
   title: string,
@@ -14,4 +16,11 @@ export interface TicketEvent {
 
 export interface EventPosterProps {
   event: TicketEvent,
+}
+
+export interface EventDetailProps {
+  selected: TicketEvent | null,
+  dialog: RefObject<HTMLDialogElement | null>,
+  onClose: () => void,
+  onBook: (event: TicketEvent) => void,
 }

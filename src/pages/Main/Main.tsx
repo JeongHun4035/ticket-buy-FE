@@ -1,123 +1,56 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiArrowDown, FiArrowRight, FiCalendar, FiMapPin, FiSearch, FiX } from 'react-icons/fi'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { FiArrowDown, FiArrowRight, FiCalendar, FiMapPin } from 'react-icons/fi'
 
-import { formatDate, toTicketEvent } from '@/api/adapters'
-import { getErrorMessage } from '@/api/client'
-import { getCategories, getEvent, getEvents, getFeaturedEvents } from '@/api/ticket'
 import BookingFlow from '@/components/booking/BookingFlow'
 import EventImage from '@/components/common/EventImage/EventImage'
 import Grid from '@/components/common/Grid/Grid'
 import Pagination from '@/components/common/Pagination/Pagination'
+import SearchField from '@/components/common/SearchField/SearchField'
 import Slider from '@/components/common/Slider/Slider'
-import useApiQuery from '@/hooks/useApiQuery'
-import useAuth from '@/hooks/useAuth'
-import { useToast } from '@/hooks/useToast'
+import useMainEvents from '@/hooks/useMainEvents'
 import { formatCurrency } from '@/utils/currency'
+import { formatDate } from '@/utils/dateTime'
+
+import EventDetail from './children/EventDetail/EventDetail'
+import EventPoster from './children/EventPoster/EventPoster'
 
 import './Main.css'
 
 import type { GridColumn } from '@/types/interfaces/components'
-import type { EventPosterProps, TicketEvent } from '@/types/interfaces/pages/main'
-
-const EventPoster = ({ event }: EventPosterProps) => (
-  <div className="event-poster"><EventImage className="event-poster-image" src={event.posterUrl} title={event.title} /></div>
-)
+import type { TicketEvent } from '@/types/interfaces/pages/main'
 
 const Main: React.FC = () => {
   const { t, i18n } = useTranslation()
   const money = (value: number) => formatCurrency(value, i18n.resolvedLanguage)
-  const [category, setCategory] = useState('')
-  const [query, setQuery] = useState('')
-  const [sort, setSort] = useState('RECOMMENDED')
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(6)
-  const [selected, setSelected] = useState<TicketEvent | null>(null)
-  const dialog = useRef<HTMLDialogElement>(null)
-  const [bookingEvent, setBookingEvent] = useState<TicketEvent | null>(null)
-  const auth = useAuth()
-  const { toast } = useToast()
-  const navigate = useNavigate()
-  const [actionError, setActionError] = useState('')
-  const [detailLoading, setDetailLoading] = useState(false)
-  const [searchParams] = useSearchParams()
-  const requestedEvent = searchParams.get('eventId')
-  const language = i18n.resolvedLanguage ?? 'ko'
-  const loadEvents = useCallback((signal: AbortSignal) => getEvents({
-    q: query,
+  const {
     category,
-    sort,
-    page,
-    pageSize: limit,
-  }, signal, language), [
+    setCategory,
     query,
-    category,
+    setQuery,
+    submitSearch,
     sort,
+    setSort,
     page,
+    setPage,
     limit,
+    setLimit,
+    selected,
+    setSelected,
+    dialog,
+    bookingEvent,
+    setBookingEvent,
+    actionError,
     language,
-  ])
-  const list = useApiQuery(loadEvents)
-  const loadFeatured = useCallback((signal: AbortSignal) => getFeaturedEvents(signal, language), [language])
-  const featured = useApiQuery(loadFeatured)
-  const categoryList = useApiQuery(getCategories)
-  const categories = [
-    {
-      code: '',
-      label: t('전체'),
-    },
-    ...(categoryList.data?.items ?? []).map(item => ({
-      code: item.code,
-      label: item.names[language] ?? item.names.ko ?? item.code,
-    })),
-  ]
-  const rows = (list.data?.items ?? []).map(toTicketEvent)
-  const featuredEvents = (featured.data?.items ?? []).map(toTicketEvent)
-  const openEvent = async (event: TicketEvent) => {
-    if (detailLoading) return
-    setActionError('')
-    setDetailLoading(true)
-    try {
-      setSelected(toTicketEvent(await getEvent(event.id)))
-      dialog.current?.showModal()
-    } catch (error) {
-      setActionError(getErrorMessage(error))
-    } finally {
-      setDetailLoading(false)
-    }
-  }
-  useEffect(() => {
-    if (!requestedEvent || !/^\d+$/.test(requestedEvent) || !Number.isSafeInteger(Number(requestedEvent))) return undefined
-    let active = true
-    void getEvent(Number(requestedEvent)).then(event => {
-      if (active) {
-        setSelected(toTicketEvent(event)); dialog.current?.showModal()
-      }
-    })
-      .catch((error: unknown) => {
-        if (active) setActionError(getErrorMessage(error))
-      })
-    return () => {
-      active = false
-    }
-  }, [requestedEvent, language])
-  const reloadEvents = list.reload
-  const reloadFeatured = featured.reload
-  useEffect(() => {
-    const reload = () => {
-      reloadEvents(); reloadFeatured()
-    }
-    window.addEventListener('ticket-buy:events-updated', reload)
-    return () => window.removeEventListener('ticket-buy:events-updated', reload)
-  }, [reloadEvents, reloadFeatured])
-  const startBooking = (event: TicketEvent) => {
-    if (!auth.user) {
-      toast(t('로그인이 필요합니다.'), { variant: 'info' })
-      void navigate('/sign-in', { state: { from: '/' } }); return
-    }
-    setBookingEvent(event)
-  }
+    list,
+    featured,
+    categoryList,
+    categories,
+    rows,
+    featuredEvents,
+    openEvent,
+    startBooking,
+    retry,
+  } = useMainEvents()
   const columns: GridColumn<TicketEvent>[] = [
     {
       key: 'event',
@@ -152,9 +85,7 @@ const Main: React.FC = () => {
 
   return (
     <div className="ticket-main">
-      {(list.error || actionError || featured.error || categoryList.error) && <div className="api-error" role="alert">{list.error || actionError || featured.error || categoryList.error}<button type="button" onClick={() => {
-        list.reload(); featured.reload(); categoryList.reload(); setActionError('')
-      }}>{t('다시 시도')}</button></div>}
+      {(list.error || actionError || featured.error || categoryList.error) && <div className="api-error" role="alert">{list.error || actionError || featured.error || categoryList.error}<button type="button" onClick={retry}>{t('다시 시도')}</button></div>}
       <section className="ticket-hero" aria-labelledby="hero-title">
         <div className="ticket-hero-copy"><span className="ticket-kicker">CURATED FOR YOUR NEXT MOMENT</span><h1 id="hero-title">{t('일상 너머의 설렘,')}<br />{t('다음 무대를 만나세요.')}</h1><p>{t('좋아하는 아티스트의 무대부터 새로운 영감의 전시까지.')}<br />{t('당신을 기다리는 특별한 순간을 발견하세요.')}</p><a href="#event-list">{t('행사 둘러보기')}<FiArrowDown aria-hidden="true" /></a><span className="ticket-hero-number">01 / YOUR NEXT EXPERIENCE</span></div>
         <Slider items={featuredEvents} getKey={event => event.id} label={t('핵심 추천 행사')} renderItem={event => (
@@ -172,9 +103,7 @@ const Main: React.FC = () => {
         <div className="ticket-section-heading"><div><span className="ticket-kicker">FIND YOUR TICKET</span><h2 id="event-list-title">{t('어떤 순간을 찾고 있나요?')}</h2><p>{t('취향에 맞는 공연과 행사를 한곳에서 만나보세요.')}</p></div></div>
         <div className="ticket-toolbar"><div className="ticket-categories" role="group" aria-label={t('행사 장르')}>{categories.map(item => <button type="button" key={item.code} aria-pressed={category === item.code} onClick={() => {
           setCategory(item.code); setPage(1)
-        }}>{item.label}</button>)}</div><label className="ticket-search"><FiSearch aria-hidden="true" /><input maxLength={100} aria-label={t('공연명 또는 장소 검색')} placeholder={t('공연명, 장소 검색')} value={query} onChange={event => {
-          setQuery(event.target.value); setPage(1)
-        }} /></label></div>
+        }}>{item.label}</button>)}</div><SearchField className="ticket-search" value={query} onChange={setQuery} onSearch={submitSearch} label={t('공연명 또는 장소 검색')} placeholder={t('공연명, 장소 검색')} /></div>
         <div className="ticket-results"><p>{t('전체 {{count}}개의 행사', { count: list.data?.total ?? 0 })}</p><label>{t('정렬')}<select value={sort} onChange={event => {
           setSort(event.target.value); setPage(1)
         }}><option value="RECOMMENDED">{t('추천순')}</option><option value="DATE_ASC">{t('공연일순')}</option><option value="PRICE_ASC">{t('낮은 가격순')}</option></select></label></div>
@@ -189,9 +118,7 @@ const Main: React.FC = () => {
       </section>
       <aside className="ticket-bottom-note"><FiCalendar aria-hidden="true" /><div><strong>{t('기다리는 순간이, 특별한 기억이 되도록.')}</strong><p>{t('티켓바이와 함께 나만의 관람 일정을 만들어보세요.')}</p></div><span>TICKET BUY</span></aside>
       {bookingEvent && <BookingFlow key={bookingEvent.id} event={bookingEvent} onClose={() => setBookingEvent(null)} />}
-      <dialog ref={dialog} aria-label={t('행사 상세 정보')} className="event-dialog" onClose={() => setSelected(null)}><button className="event-dialog-close" type="button" aria-label={t('행사 상세 닫기')} onClick={() => dialog.current?.close()}><FiX /></button>{selected && <><EventPoster event={selected} /><span className="event-category">{t(selected.category)} · {t(selected.status)}</span><h2>{t(selected.title)}</h2><p><FiMapPin aria-hidden="true" /> {t(selected.venue)}</p><p><FiCalendar aria-hidden="true" /> {formatDate(selected.date, language)}</p><strong>{t('가격 시작 {{price}}', { price: money(selected.price) })}</strong><div className="event-dialog-notice">{selected.description}</div><button className="event-detail-book" type="button" disabled={selected.status !== '예매중'} onClick={() => {
-        dialog.current?.close(); startBooking(selected)
-      }}>{selected.status === '예매중' ? t('예매하기') : t(selected.status)}</button></>}</dialog>
+      <EventDetail selected={selected} dialog={dialog} onClose={() => setSelected(null)} onBook={startBooking} />
     </div>
   )
 }

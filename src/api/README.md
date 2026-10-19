@@ -1,5 +1,15 @@
 # API 호출
 
+서비스 화면에서는 영역별 API를 사용합니다. `events.ts`, `queue.ts`, `seats.ts`, `reservations.ts`, `contents.ts`, `users.ts`, `support.ts`, `adminEvents.ts`가 엔드포인트를 담당하고, `client.ts`가 인증과 갱신을 처리합니다. 기존 `ticket.ts` 가져오기 경로는 호환성을 위해 유지합니다.
+
+```tsx
+import { getEvents } from '@/api/events'
+import { joinQueue } from '@/api/queue'
+import { getSeats } from '@/api/seats'
+```
+
+API 응답 타입은 `types/interfaces/api`의 같은 영역 파일에 있습니다. 화면 상태는 `hooks`, 순수한 날짜 표시는 `utils/dateTime.ts`, 서버 행사 데이터를 화면 형태로 바꾸는 매핑은 `adapters.ts`에서 관리합니다. 전체 구조는 [소스 구조와 책임](../../docs/ARCHITECTURE.md)을 참고하세요.
+
 `.env.local`에 `VITE_API_BASE_URL=https://api.example.com`을 설정한 후 개발 서버를 재시작합니다. 비워두면 현재 사이트로 요청합니다.
 
 두 함수는 동일한 옵션과 응답 본문 반환 방식을 제공합니다. `T`는 TypeScript 타입 지정이며 런타임 응답 검증은 별도로 필요합니다.

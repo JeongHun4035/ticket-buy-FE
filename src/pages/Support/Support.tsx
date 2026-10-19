@@ -1,21 +1,24 @@
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FiHeadphones, FiSearch } from 'react-icons/fi'
+import { FiHeadphones } from 'react-icons/fi'
 
-import { getContents, getSupportInfo } from '@/api/ticket'
+import { getContents } from '@/api/contents'
+import { getSupportInfo } from '@/api/support'
 import Pagination from '@/components/common/Pagination/Pagination'
+import SearchField from '@/components/common/SearchField/SearchField'
 import useApiQuery from '@/hooks/useApiQuery'
+import useSearchQuery from '@/hooks/useSearchQuery'
 
 import './Support.css'
 
 const Support = () => {
   const { t, i18n } = useTranslation()
-  const [query, setQuery] = useState('')
+  const { input: query, setInput: setQuery, query: submittedQuery, submit } = useSearchQuery()
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(10)
   const language = i18n.resolvedLanguage
-  const load = useCallback((signal: AbortSignal) => getContents('faqs', query, page, limit, signal, language ?? 'ko'), [
-    query,
+  const load = useCallback((signal: AbortSignal) => getContents('faqs', submittedQuery.value, page, limit, signal, language ?? 'ko'), [
+    submittedQuery,
     page,
     limit,
     language,
@@ -25,9 +28,9 @@ const Support = () => {
   return <div className="service-page">
     <header className="service-page-heading"><span>HELP CENTER</span><h1>{t('고객센터')}</h1><p>{t('궁금한 내용을 빠르게 찾아보세요.')}</p></header>
     <section className="service-contact"><FiHeadphones aria-hidden="true" /><div><h2>{support.data?.serviceName ?? t('고객센터')}</h2>{support.data?.phone && <strong>{support.data.phone}</strong>}<p>{support.data?.message}</p></div>{support.data?.email && <span>{support.data.email}</span>}</section>
-    <div className="service-section-heading"><h2>{t('자주 묻는 질문')}</h2><label className="service-search"><FiSearch aria-hidden="true" /><input maxLength={100} value={query} onChange={event => {
-      setQuery(event.target.value); setPage(1)
-    }} placeholder={t('질문 검색')} aria-label={t('질문 검색')} /></label></div>
+    <div className="service-section-heading"><h2>{t('자주 묻는 질문')}</h2><SearchField className="service-search" value={query} onChange={setQuery} onSearch={() => {
+      setPage(1); submit()
+    }} label={t('질문 검색')} placeholder={t('질문 검색')} /></div>
     {(faqs.error || support.error) && <div className="api-error" role="alert">{faqs.error || support.error}<button type="button" onClick={() => {
       faqs.reload(); support.reload()
     }}>{t('다시 시도')}</button></div>}

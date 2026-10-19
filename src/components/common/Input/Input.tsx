@@ -1,11 +1,7 @@
-import type { ChangeEvent, InputHTMLAttributes } from 'react'
+import type { InputProps } from '@/types/interfaces/components/input'
+import type { ChangeEvent } from 'react'
 
 import './Input.css'
-
-interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
-  label?: string,
-  onChange?: (value: string) => void,
-}
 
 const Input: React.FC<InputProps> = ({
   id,

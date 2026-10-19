@@ -63,7 +63,7 @@ React와 TypeScript 기반 SPA로 구성되어 있으며, 별도 백엔드의 RE
 public/
 └── images/                  # 추천 행사 배너 그래픽
 src/
-├── api/                     # HTTP 클라이언트, 인증 갱신, API 서비스·응답 매핑
+├── api/                     # 공통 HTTP·인증과 행사/대기열/좌석/예매/콘텐츠별 API
 ├── assets/                  # 공통 리소스 및 Tailwind 기본 스타일
 ├── components/
 │   ├── auth/                # 로그인 접근 제어
@@ -71,15 +71,15 @@ src/
 │   ├── common/              # Grid, Pagination, Slider, SeatMap, Toast 등
 │   └── layouts/             # Header, Footer
 ├── contexts/                # 인증·테마·토스트 Context
-├── hooks/                   # API 조회, 인증, 해시 스크롤 등 공통 훅
+├── hooks/                   # 화면별 조회·예매·등록 상태와 공통 동작 훅
 ├── i18n/
 │   └── locales/             # ko / en / zh-CN 번역 JSON
 ├── layouts/                 # 공통 페이지 레이아웃
 ├── mocks/                   # 이전 UI 및 번역 검증용 fixtures
-├── pages/                   # Main, Sign, Reservations, Support, Board, Admin 등
+├── pages/                   # 경로별 화면과 해당 화면의 children 컴포넌트
 ├── routes/                  # 경로 상수와 메뉴 메타 정보
 ├── styles/                  # 전역 스타일, 테마, 다크 모드·API 화면 스타일
-├── types/interfaces/        # API·컴포넌트·페이지별 인터페이스
+├── types/interfaces/        # API·컴포넌트·페이지·Context별 인터페이스
 ├── utils/                   # 금액·날짜 등 공통 유틸리티
 ├── App.tsx                  # Provider 조합
 ├── AppRouter.tsx            # 라우트 구성
@@ -173,6 +173,51 @@ cat /etc/os-release
 
 애플리케이션의 개발 검증 도구 버전은 Node.js 24.x와 pnpm 11.x입니다. 이는 VM의 OS나 운영 서버에 설치된 버전을 의미하지 않습니다. 실제 VM 정보를 확인한 뒤 운영체제와 런타임 버전을 배포 환경 문서에 별도로 기록하세요.
 
+### VM과 Linux 배포판의 관계
+
+VM은 가상 머신이고, Rocky Linux·Ubuntu·Debian은 VM에 설치할 수 있는 운영체제입니다. VM을 사용한다는 사실만으로 OS가 정해지지는 않습니다. VM 생성 시 선택한 이미지 또는 직접 설치한 OS를 기준으로 확인합니다.
+
+| 구분 | Rocky Linux | Ubuntu | Debian |
+| --- | --- | --- | --- |
+| 배포판 계열 | RHEL 호환 계열 | Debian 계열 | Debian 계열 |
+| 기본 패키지 관리 도구 | `dnf` | `apt` | `apt` |
+| 설치 명령 형식 | `sudo dnf install <패키지>` | `sudo apt install <패키지>` | `sudo apt install <패키지>` |
+| 배포 시 확인 사항 | SELinux 정책, 방화벽 설정, 패키지 저장소 | 방화벽 설정, 패키지 저장소 | 방화벽 설정, 패키지 저장소 |
+
+위 명령은 형식 예시입니다. 패키지 이름과 제공 버전은 OS 버전 및 활성화된 저장소에 따라 다르므로, 설치 후 필요한 버전인지 확인합니다. 방화벽 도구와 보안 정책의 활성화 여부 역시 실제 VM 설정을 기준으로 확인합니다.
+
+### 이 프론트엔드의 VM 배포 조건
+
+이 프로젝트는 특정 Linux 배포판을 지정하지 않습니다. 다만 각 배포판에서의 운영 검증 결과는 이 저장소에 기록되어 있지 않습니다.
+
+- **빌드 환경:** Node.js와 pnpm으로 `pnpm install`, `pnpm build`를 실행합니다. 현재 문서에 기록된 개발 검증 버전은 Node.js 24.x, pnpm 11.x입니다.
+- **서비스 환경:** 빌드 결과인 `dist/`를 Nginx 같은 웹 서버로 제공합니다. 빌드를 다른 환경에서 수행하고 정적 파일만 VM에 배포한다면, 정적 파일 제공을 위해 VM에 Node.js와 pnpm을 설치할 필요는 없습니다.
+- **페이지 경로:** `/sign-in`, `/reservations` 같은 SPA 경로를 직접 열거나 새로고침해도 동작하도록 웹 서버에 `index.html` fallback을 설정합니다.
+- **API 연결:** 같은 주소를 사용한다면 웹 서버가 `/api` 요청을 백엔드로 전달해야 합니다. `vite.config.ts`의 프록시는 로컬 개발 서버용이며 운영 웹 서버에 자동으로 적용되지 않습니다.
+- **환경변수:** API가 별도 주소라면 `.env.example`을 참고해 `VITE_API_BASE_URL`에 API origin을 지정한 뒤 빌드합니다. 이 값은 빌드 결과에 반영되므로 변경 후 다시 빌드해야 합니다.
+
+### 실제 VM 정보 기록
+
+아래 명령은 Linux VM 내부에서 실행합니다. `uname -r`은 커널 버전이며, 배포판 이름과 버전은 `/etc/os-release`로 확인합니다. Node.js와 pnpm 명령은 해당 VM에서 빌드하는 경우 확인합니다.
+
+```bash
+cat /etc/os-release
+uname -r
+uname -m
+node --version
+pnpm --version
+```
+
+| 기록 항목 | 현재 확인 상태 |
+| --- | --- |
+| VM 운영체제 및 버전 | 미확인 — VM의 `PRETTY_NAME`, `VERSION_ID`로 기록 |
+| CPU 아키텍처 | 미확인 — `uname -m` 결과로 기록 |
+| 커널 버전 | 미확인 — `uname -r` 결과로 기록 |
+| VM 내 빌드 여부 | 미확인 — VM 빌드 또는 외부 빌드 후 `dist/` 배포 여부 기록 |
+| VM의 Node.js / pnpm 버전 | 미확인 — VM에서 빌드하는 경우 기록 |
+| 정적 파일 제공 웹 서버 | 미확인 — 실제 제품명과 버전 기록 |
+| API 연결 방식 | 미확인 — `/api` 프록시 또는 별도 API origin 기록 |
+
 ## 명령어와 테스트
 
 | 명령어 | 설명 |
@@ -198,6 +243,7 @@ cat /etc/os-release
 ## 상세 문서
 
 - [API 연동과 인증·예매 계약](docs/API_INTEGRATION.md)
+- [소스 구조와 책임 분리](docs/ARCHITECTURE.md)
 - [공통 HTTP 요청 유틸리티](src/api/README.md)
 - [다국어 리소스 관리](src/i18n/README.md)
 - [목 데이터 fixtures](src/mocks/README.md)

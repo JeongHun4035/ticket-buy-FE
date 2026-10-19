@@ -5,18 +5,11 @@ import Toast from '@/components/common/Toast/Toast'
 
 import { ToastContext } from './ToastContext'
 
-import type { ToastOptions, ToastVariant } from './ToastContext'
-import type { ReactNode } from 'react'
+import type { ToastOptions } from './ToastContext'
+import type { ProviderProps } from '@/types/interfaces/contexts/provider'
+import type { ToastItem } from '@/types/interfaces/contexts/toastItem'
 
-interface ToastItem {
-  id: number,
-  message: string,
-  variant: ToastVariant,
-  duration: number,
-  closing: boolean,
-}
-
-const ToastProvider = ({ children }: { children: ReactNode }) => {
+const ToastProvider = ({ children }: ProviderProps) => {
   const [items, setItems] = useState<ToastItem[]>([])
   const nextId = useRef(0)
   const dismiss = useCallback((id: number) => {

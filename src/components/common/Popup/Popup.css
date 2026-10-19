@@ -22,7 +22,7 @@
   flex-direction: column;
 
   width: 100%;
-  max-height: calc(100vh - 48px);
+  max-height: calc(100dvh - 48px);
   padding: 24px;
 
   background-color: var(--surface);
@@ -88,12 +88,15 @@
 
 .popup-content {
   flex: 1;
+  min-height: 0;
 
   padding: 20px;
 
   color: var(--text-secondary);
 
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .popup-footer {

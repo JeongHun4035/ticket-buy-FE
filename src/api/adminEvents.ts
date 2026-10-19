@@ -1,7 +1,7 @@
 import { request } from './client'
 
 import type { AdminVenue, AdminVenueLayout, EventCreated, EventCreateInput } from '@/types/interfaces/api/adminEvents'
-import type { ApiPage } from '@/types/interfaces/api/ticket'
+import type { ApiPage } from '@/types/interfaces/api/common'
 
 export const getAdminVenues = (page: number, pageSize: number, signal: AbortSignal) => request<ApiPage<AdminVenue>>('/admin/venues', {
   params: {

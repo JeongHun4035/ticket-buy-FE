@@ -8,6 +8,7 @@ import BrandLogo from '@/components/common/BrandLogo/BrandLogo'
 import Input from '@/components/common/Input/Input'
 import LanguageSwitcher from '@/components/common/LanguageSwitcher/LanguageSwitcher'
 import useAuth from '@/hooks/useAuth'
+import useScrollToTop from '@/hooks/useScrollToTop'
 import { ROUTE_PATHS } from '@/routes/route'
 
 import './Sign-up.css'
@@ -19,6 +20,7 @@ const SignIn: React.FC = () => {
   const auth = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  useScrollToTop()
   const state: unknown = location.state
   const returnTo = state && typeof state === 'object' && 'from' in state && typeof state.from === 'string' && state.from.startsWith('/') && !state.from.startsWith('//') ? state.from : '/'
   const [busy, setBusy] = useState(false)

@@ -1,7 +1,7 @@
 ﻿import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import { getSupportInfo } from '@/api/ticket'
+import { getSupportInfo } from '@/api/support'
 import BrandLogo from '@/components/common/BrandLogo/BrandLogo'
 import useApiQuery from '@/hooks/useApiQuery'
 import { ROUTE_PATHS } from '@/routes/route'

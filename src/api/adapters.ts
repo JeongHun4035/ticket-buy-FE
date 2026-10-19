@@ -1,4 +1,4 @@
-﻿import type { ApiEvent } from '@/types/interfaces/api/ticket'
+﻿import type { ApiEvent } from '@/types/interfaces/api/events'
 import type { TicketEvent } from '@/types/interfaces/pages/main'
 
 export const toTicketEvent = (event: ApiEvent): TicketEvent => ({
@@ -26,28 +26,4 @@ export const toTicketEvent = (event: ApiEvent): TicketEvent => ({
   headline: event.title,
   status: event.status === 'ON_SALE' ? '예매중' : event.status === 'UPCOMING' ? '오픈예정' : '마감',
 })
-export const formatDate = (date: string, language = 'ko') => {
-  const value = new Date(date)
-  return Number.isNaN(value.getTime()) ? date : new Intl.DateTimeFormat(language, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-    timeZone: 'Asia/Seoul',
-  }).format(value)
-}
-
-export const formatDateOnly = (date: string) => {
-  const value = new Date(date)
-  if (Number.isNaN(value.getTime())) return date
-  const parts = new Intl.DateTimeFormat('en', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    timeZone: 'Asia/Seoul',
-  }).formatToParts(value)
-  const part = (type: string) => parts.find(item => item.type === type)?.value ?? ''
-  return [
-    part('year'),
-    part('month'),
-    part('day'),
-  ].join('-')
-}
+export { formatDate, formatDateOnly } from '@/utils/dateTime'

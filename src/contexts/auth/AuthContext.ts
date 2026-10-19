@@ -1,11 +1,7 @@
-﻿import { createContext } from 'react'
+import { createContext } from 'react'
 
-import type { ApiUser } from '@/types/interfaces/api/ticket'
+import type { AuthContextValue } from '@/types/interfaces/contexts/auth'
 
-export interface AuthContextValue {
-  user: ApiUser | null,
-  loading: boolean,
-  signIn: (username: string, password: string) => Promise<void>,
-  signOut: () => Promise<void>,
-}
+export type { AuthContextValue } from '@/types/interfaces/contexts/auth'
+
 export const AuthContext = createContext<AuthContextValue | null>(null)

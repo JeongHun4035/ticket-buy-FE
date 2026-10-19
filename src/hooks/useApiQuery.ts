@@ -2,8 +2,7 @@
 
 import { getErrorMessage } from '@/api/client'
 
-import type { ApiQueryRequest } from '@/types/interfaces/api/query'
-import type { QueryState } from '@/types/interfaces/api/ticket'
+import type { ApiQueryRequest , QueryState } from '@/types/interfaces/api/query'
 
 const useApiQuery = <T = unknown>(load: (signal: AbortSignal) => Promise<T>) => {
   const [version, setVersion] = useState(0)

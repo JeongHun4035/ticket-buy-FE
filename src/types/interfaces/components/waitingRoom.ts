@@ -1,4 +1,5 @@
-﻿import type { Performance, QueueEntry } from '../api/ticket'
+﻿import type { Performance } from '../api/events'
+import type { QueueEntry } from '../api/queue'
 import type { TicketEvent } from '../pages/main'
 
 export interface WaitingRoomProps {

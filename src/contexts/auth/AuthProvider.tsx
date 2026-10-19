@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { hasKnownSession, login, logout, refreshSession, subscribeSession } from '@/api/client'
-import { getCurrentUser } from '@/api/ticket'
+import { getCurrentUser } from '@/api/users'
 
 import { AuthContext } from './AuthContext'
 
-import type { ApiUser } from '@/types/interfaces/api/ticket'
-import type { ReactNode } from 'react'
+import type { ApiUser } from '@/types/interfaces/api/users'
+import type { ProviderProps } from '@/types/interfaces/contexts/provider'
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
+const AuthProvider = ({ children }: ProviderProps) => {
   const [user, setUser] = useState<ApiUser | null>(null)
   const [loading, setLoading] = useState(true)
   useEffect(() => {

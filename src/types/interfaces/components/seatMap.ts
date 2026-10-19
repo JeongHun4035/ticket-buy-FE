@@ -10,6 +10,8 @@
 
 export interface SeatMapProps {
   seats: readonly Seat[],
+  totalSeats?: number,
+  availableSeats?: number,
   selectedIds: readonly string[],
   onChange: (selectedIds: string[]) => void,
   maxSelection?: number,

@@ -2,19 +2,9 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from 'react-icons/fi'
 
-import type { ToastVariant } from '@/contexts/toast/ToastContext'
+import type { ToastProps } from '@/types/interfaces/components/toast'
 
 import './Toast.css'
-
-interface ToastProps {
-  id: number,
-  message: string,
-  variant: ToastVariant,
-  duration: number,
-  closing: boolean,
-  onClose: (id: number) => void,
-  onExited: (id: number) => void,
-}
 
 const Toast = ({ id, message, variant, duration, closing, onClose, onExited }: ToastProps) => {
   const { t } = useTranslation()

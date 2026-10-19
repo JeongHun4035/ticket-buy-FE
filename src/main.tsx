@@ -10,6 +10,7 @@ import '@/styles/theme.css'
 import '@/styles/global.css'
 import '@/styles/dark.css'
 import '@/styles/api.css'
+import '@/styles/service.css'
 import App from './App.tsx'
 
 const rootElement = document.getElementById('root')
