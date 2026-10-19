@@ -1,14 +1,5 @@
-import './NotFound.css'
+import { Navigate } from 'react-router-dom'
 
-const NotFound: React.FC = () => {
-  return (
-    <div className="not-found-container">
-      <h1>404 - Not Found</h1>
-      <p>Current Page Not exist <br />
-        please check the URL or contact the administrator.
-      </p>
-    </div>
-  )
-}
+const NotFound = () => <Navigate to="/error/404" replace />
 
 export default NotFound

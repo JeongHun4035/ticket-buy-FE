@@ -1,0 +1,15 @@
+.error-screen { display: grid; place-items: center; padding: 48px 20px; color: var(--text-primary); }
+.error-screen--page { min-height: 100dvh; box-sizing: border-box; background: var(--background); }
+.error-screen__card { width: 100%; max-width: 580px; box-sizing: border-box; padding: 48px 32px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--surface); text-align: center; }
+.error-screen__brand { display: block; margin-bottom: 36px; color: var(--text-muted); font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+.error-screen__icon { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 24px; border-radius: 50%; background: var(--background); color: var(--primary); font-size: 34px; }
+.error-screen__code { color: var(--primary); font-size: 13px; font-weight: 700; letter-spacing: 2px; }
+.error-screen h1 { margin: 16px 0; font-size: clamp(23px, 4vw, 30px); line-height: 1.4; overflow-wrap: anywhere; }
+.error-screen p { margin: 0 auto; max-width: 410px; color: var(--text-secondary); font-size: 15px; line-height: 1.8; word-break: keep-all; overflow-wrap: anywhere; }
+.error-screen .error-screen__wait { margin-top: 16px; color: var(--primary); }
+.error-screen__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
+.error-screen__actions a, .error-screen__actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 20px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--surface); color: var(--text-primary); font: inherit; font-size: 14px; text-decoration: none; cursor: pointer; }
+.error-screen__actions .error-screen__primary { background: var(--button-primary-background); color: var(--button-primary-text); border-color: transparent; }
+.error-screen__actions :disabled { opacity: .5; cursor: wait; }
+.error-screen__actions :focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
+@media (max-width: 480px) { .error-screen { padding: 24px 16px; } .error-screen__card { padding: 32px 20px; } .error-screen__actions { flex-direction: column; } }

@@ -31,9 +31,8 @@ const Main: React.FC = () => {
     sort,
     setSort,
     page,
-    setPage,
     limit,
-    setLimit,
+    setPagination,
     selected,
     setSelected,
     dialog,
@@ -83,6 +82,7 @@ const Main: React.FC = () => {
     },
   ]
 
+
   return (
     <div className="ticket-main">
       {(list.error || actionError || featured.error || categoryList.error) && <div className="api-error" role="alert">{list.error || actionError || featured.error || categoryList.error}<button type="button" onClick={retry}>{t('다시 시도')}</button></div>}
@@ -102,17 +102,17 @@ const Main: React.FC = () => {
       <section className="ticket-discovery" id="event-list" aria-labelledby="event-list-title">
         <div className="ticket-section-heading"><div><span className="ticket-kicker">FIND YOUR TICKET</span><h2 id="event-list-title">{t('어떤 순간을 찾고 있나요?')}</h2><p>{t('취향에 맞는 공연과 행사를 한곳에서 만나보세요.')}</p></div></div>
         <div className="ticket-toolbar"><div className="ticket-categories" role="group" aria-label={t('행사 장르')}>{categories.map(item => <button type="button" key={item.code} aria-pressed={category === item.code} onClick={() => {
-          setCategory(item.code); setPage(1)
+          setCategory(item.code)
         }}>{item.label}</button>)}</div><SearchField className="ticket-search" value={query} onChange={setQuery} onSearch={submitSearch} label={t('공연명 또는 장소 검색')} placeholder={t('공연명, 장소 검색')} /></div>
         <div className="ticket-results"><p>{t('전체 {{count}}개의 행사', { count: list.data?.total ?? 0 })}</p><label>{t('정렬')}<select value={sort} onChange={event => {
-          setSort(event.target.value); setPage(1)
+          setSort(event.target.value)
         }}><option value="RECOMMENDED">{t('추천순')}</option><option value="DATE_ASC">{t('공연일순')}</option><option value="PRICE_ASC">{t('낮은 가격순')}</option></select></label></div>
         <Grid loading={list.loading} columns={columns} data={rows} rowKey={event => event.id} caption={t('예매 가능한 공연 및 행사 목록')} emptyMessage={t('검색 결과가 없습니다. 다른 검색어나 장르를 선택해주세요.')} className="ticket-event-grid" footer={<Pagination value={list.data?.total ?? 0} page={page} limit={limit} pageLimitOptions={[
           6,
           12,
           24,
         ]} onChange={(nextPage, nextLimit) => {
-          setPage(nextPage); setLimit(nextLimit)
+          setPagination(nextPage, nextLimit)
         }} />} />
         <p className="ticket-data-note">{t('행사 정보와 좌석은 서버에서 실시간으로 조회합니다.')}</p>
       </section>

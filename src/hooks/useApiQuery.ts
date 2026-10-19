@@ -50,6 +50,7 @@ const useApiQuery = <T = unknown>(load: (signal: AbortSignal) => Promise<T>) => 
         data: null,
         loading: false,
         error: getErrorMessage(error),
+        failure: error,
       })
     })
     return () => {

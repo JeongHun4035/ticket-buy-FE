@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+
 import Pagination from '@/components/common/Pagination/Pagination'
 import useContentEditor from '@/hooks/useContentEditor'
 

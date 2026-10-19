@@ -16,9 +16,7 @@ import type { GridColumn } from '@/types/interfaces/components'
 
 const Board = () => {
   const { t, i18n } = useTranslation()
-  const { input: query, setInput: setQuery, query: submittedQuery, submit } = useSearchQuery()
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(10)
+  const { input: query, setInput: setQuery, query: submittedQuery, submit, page, limit, setPagination } = useSearchQuery()
   const [selected, setSelected] = useState<ApiContent | null>(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -72,11 +70,11 @@ const Board = () => {
   return <div className="service-page">
     <header className="service-page-heading"><span>NEWS & NOTICE</span><h1>{t('게시판')}</h1><p>{t('티켓바이의 새로운 소식과 이용 안내를 확인하세요.')}</p></header>
     <div className="service-section-heading"><h2>{t('공지 및 소식')}</h2><SearchField className="service-search" value={query} onChange={setQuery} onSearch={() => {
-      setPage(1); submit()
+      submit()
     }} label={t('게시글 검색')} placeholder={t('게시글 검색')} /></div>
     {(posts.error || error) && <div className="api-error" role="alert">{posts.error || error}<button type="button" onClick={posts.reload}>{t('다시 시도')}</button></div>}
     <Grid loading={posts.loading} className="service-board" columns={columns} data={posts.data?.items ?? []} rowKey={post => post.id} caption={t('게시판')} emptyMessage={t('검색 결과가 없습니다.')} footer={<Pagination value={posts.data?.total ?? 0} page={page} limit={limit} onChange={(next, size) => {
-      setPage(next); setLimit(size)
+      setPagination(next, size)
     }} />} />
     <dialog ref={dialog} className="service-post-dialog" aria-labelledby="post-title" onClose={() => setSelected(null)}><button className="service-dialog-close" type="button" aria-label={t('닫기')} onClick={() => dialog.current?.close()}><FiX /></button>{selected && <><span className="service-post-category">{t(selected.category)} · {formatDateOnly(selected.date)}</span><h2 id="post-title">{selected.title}</h2><p>{selected.content}</p></>}</dialog>
   </div>

@@ -1,5 +1,6 @@
 import i18n from '@/i18n'
 
+import { reportApiError } from './errorNavigation'
 import { fetchRequest } from './fetch'
 import { ApiError } from './http'
 
@@ -53,7 +54,7 @@ export const refreshSession = () => {
     })
   return refreshing
 }
-export const request = async <T = unknown>(path: string, options: RequestOptions = {}, authenticated = false): Promise<T> => {
+const authenticatedRequest = async <T = unknown>(path: string, options: RequestOptions = {}, authenticated = false): Promise<T> => {
   const run = () => fetchRequest<T>(`/api/v1${path}`, {
     ...options,
     headers: {
@@ -71,6 +72,15 @@ export const request = async <T = unknown>(path: string, options: RequestOptions
     throw error
   }
 }
+export const request = async <T = unknown>(path: string, options: RequestOptions = {}, authenticated = false): Promise<T> => {
+  try {
+    return await authenticatedRequest<T>(path, options, authenticated)
+  } catch (error) {
+    if (!options.signal?.aborted) reportApiError(error)
+    throw error
+  }
+}
+
 export const login = async (username: string, password: string) => {
   const session = await request<AuthSession>('/auth/login', {
     method: 'POST',

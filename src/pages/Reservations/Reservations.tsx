@@ -1,4 +1,5 @@
-﻿import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
+
 
 import Grid from '@/components/common/Grid/Grid'
 import Pagination from '@/components/common/Pagination/Pagination'

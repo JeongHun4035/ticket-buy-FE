@@ -15,11 +15,7 @@ import type { TicketEvent } from '@/types/interfaces/pages/main'
 
 const useMainEvents = () => {
   const { t, i18n } = useTranslation()
-  const [category, setCategory] = useState('')
-  const { input: query, setInput: setQuery, query: submittedQuery, submit } = useSearchQuery()
-  const [sort, setSort] = useState('RECOMMENDED')
-  const [page, setPage] = useState(1)
-  const [limit, setLimit] = useState(6)
+  const { input: query, setInput: setQuery, query: submittedQuery, submit, category, setCategory, sort, setSort, page, setPage, limit, setPagination } = useSearchQuery(6)
   const [selected, setSelected] = useState<TicketEvent | null>(null)
   const dialog = useRef<HTMLDialogElement>(null)
   const [bookingEvent, setBookingEvent] = useState<TicketEvent | null>(null)
@@ -107,7 +103,6 @@ const useMainEvents = () => {
   }
 
   const submitSearch = () => {
-    setPage(1)
     submit()
   }
   const retry = () => {
@@ -127,7 +122,7 @@ const useMainEvents = () => {
     page,
     setPage,
     limit,
-    setLimit,
+    setPagination,
     selected,
     setSelected,
     dialog,

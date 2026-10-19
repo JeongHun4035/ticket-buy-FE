@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 
 import RequireAdmin from '@/components/auth/RequireAdmin'
 import RequireAuth from '@/components/auth/RequireAuth'
+import ErrorScreen from '@/components/common/ErrorScreen/ErrorScreen'
 import Layout from '@/layouts/Layout/Layout'
 import NotFound from '@/NotFound'
 import Admin from '@/pages/Admin/Admin'
@@ -30,6 +31,7 @@ import { ROUTE_PATHS } from '@/routes/route'
 const AppRouter = () => {
   return (
     <Routes>
+      <Route path="/error/:status" element={<ErrorScreen fullPage />} />
       <Route path={ROUTE_PATHS.SIGN_UP} element={<SignUp />} />
       <Route
         path={ROUTE_PATHS.SIGN_IN}
